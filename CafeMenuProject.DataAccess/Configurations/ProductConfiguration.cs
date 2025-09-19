@@ -1,4 +1,5 @@
-﻿using CafeMenuProject.Core.Entites;
+﻿using CafeMenuProject.Core.Entities;
+using CafeMenuProject.Core.Entities;
 using System.Data.Entity.ModelConfiguration;
 
 namespace CafeMenuProject.DataAccess.Configurations
@@ -12,20 +13,21 @@ namespace CafeMenuProject.DataAccess.Configurations
 
         public ProductConfiguration()
         {
-            HasKey(c => c.ProductId);
+            HasKey(p => p.ProductId);
 
-            Property(c => c.ProductName)
+            Property(p => p.ProductName)
                 .IsRequired()
                 .HasMaxLength(200);
 
             Property(p => p.Price)
                 .IsRequired()
+                .HasColumnType("decimal")
                 .HasPrecision(18, 2);
 
-            Property(c => c.IsDeleted)
+            Property(p => p.IsDeleted)
                 .HasColumnAnnotation("DefaultValue", false);
 
-            Property(c => c.CreatedDate)
+            Property(p => p.CreatedDate)
                 .HasColumnAnnotation("DefaultValueSql", "GETDATE()");
         }
 

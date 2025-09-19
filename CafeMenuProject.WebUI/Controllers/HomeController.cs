@@ -1,5 +1,5 @@
 ﻿using CafeMenuProject.Business.Abstract;
-using CafeMenuProject.Core.Entites;
+using CafeMenuProject.Core.Entities;
 using System;
 using System.Threading.Tasks;
 using System.Web.Mvc;

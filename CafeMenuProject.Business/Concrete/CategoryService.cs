@@ -1,5 +1,5 @@
 ﻿using CafeMenuProject.Business.Abstract;
-using CafeMenuProject.Core.Entites;
+using CafeMenuProject.Core.Entities;
 using CafeMenuProject.DataAccess.Abstract;
 using System.Collections.Generic;
 using System.Threading.Tasks;

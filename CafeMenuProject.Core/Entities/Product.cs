@@ -1,7 +1,7 @@
 ﻿using CafeMenuProject.Core.Abstract;
 using System;
 
-namespace CafeMenuProject.Core.Entites
+namespace CafeMenuProject.Core.Entities
 {
     /// <summary>
     /// Product entity
