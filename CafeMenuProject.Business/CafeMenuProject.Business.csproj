@@ -42,7 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\ICategoryService.cs" />
+    <Compile Include="Abstract\IProductPropertyService.cs" />
     <Compile Include="Abstract\IProductService.cs" />
+    <Compile Include="Abstract\IPropertyService.cs" />
     <Compile Include="Concrete\CategoryService.cs" />
     <Compile Include="Concrete\ProductService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
