@@ -30,6 +30,8 @@ namespace CafeMenuProject.DataAccess.Context
 
             modelBuilder.Configurations.Add(new CategoryConfiguration());
             modelBuilder.Configurations.Add(new ProductConfiguration());
+            modelBuilder.Configurations.Add(new PropertyConfiguration());
+            modelBuilder.Configurations.Add(new ProductPropertyConfiguration());
         }
 
         #endregion

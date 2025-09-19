@@ -4,7 +4,7 @@ using System;
 namespace CafeMenuProject.Core.Entites
 {
     /// <summary>
-    /// Product
+    /// Product entity
     /// </summary>
     public class Product : ISoftDeletedEntity
     {

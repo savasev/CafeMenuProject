@@ -55,6 +55,8 @@
     <Compile Include="Concrete\EfRepository.cs" />
     <Compile Include="Configurations\CategoryConfiguration.cs" />
     <Compile Include="Configurations\ProductConfiguration.cs" />
+    <Compile Include="Configurations\ProductPropertyConfiguration.cs" />
+    <Compile Include="Configurations\PropertyConfiguration.cs" />
     <Compile Include="Context\ApplicationDbContext.cs" />
     <Compile Include="Migrations\202509191752394_InitialCreate.cs" />
     <Compile Include="Migrations\202509191752394_InitialCreate.Designer.cs">

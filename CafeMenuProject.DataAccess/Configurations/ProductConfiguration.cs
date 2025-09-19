@@ -4,7 +4,7 @@ using System.Data.Entity.ModelConfiguration;
 namespace CafeMenuProject.DataAccess.Configurations
 {
     /// <summary>
-    /// Represents the product configuration
+    /// Product entity configuration
     /// </summary>
     public class ProductConfiguration : EntityTypeConfiguration<Product>
     {
