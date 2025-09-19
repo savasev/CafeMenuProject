@@ -1,5 +1,4 @@
 ﻿using CafeMenuProject.Core.Entities;
-using CafeMenuProject.Core.Entities;
 using CafeMenuProject.DataAccess.Configurations;
 using System.Data.Entity;
 
