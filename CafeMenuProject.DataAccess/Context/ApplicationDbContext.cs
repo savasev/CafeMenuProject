@@ -1,4 +1,5 @@
 ﻿using CafeMenuProject.Core.Entites;
+using CafeMenuProject.Core.Entities;
 using CafeMenuProject.DataAccess.Configurations;
 using System.Data.Entity;
 
@@ -19,6 +20,10 @@ namespace CafeMenuProject.DataAccess.Context
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Product> Products { get; set; }
+
+        public DbSet<Property> Properties { get; set; }
+
+        public DbSet<ProductProperty> ProductProperties { get; set; }
 
         #endregion
 

@@ -58,11 +58,6 @@
     <Compile Include="Configurations\ProductPropertyConfiguration.cs" />
     <Compile Include="Configurations\PropertyConfiguration.cs" />
     <Compile Include="Context\ApplicationDbContext.cs" />
-    <Compile Include="Migrations\202509191752394_InitialCreate.cs" />
-    <Compile Include="Migrations\202509191752394_InitialCreate.Designer.cs">
-      <DependentUpon>202509191752394_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -76,9 +71,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202509191752394_InitialCreate.resx">
-      <DependentUpon>202509191752394_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
+    <Folder Include="Migrations\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
