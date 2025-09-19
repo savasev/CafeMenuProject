@@ -46,7 +46,9 @@
     <Compile Include="Abstract\IProductService.cs" />
     <Compile Include="Abstract\IPropertyService.cs" />
     <Compile Include="Concrete\CategoryService.cs" />
+    <Compile Include="Concrete\ProductPropertyService.cs" />
     <Compile Include="Concrete\ProductService.cs" />
+    <Compile Include="Concrete\PropertyService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
