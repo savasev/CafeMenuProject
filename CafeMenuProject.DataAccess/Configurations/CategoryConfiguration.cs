@@ -1,5 +1,4 @@
 ﻿using CafeMenuProject.Entities;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace CafeMenuProject.DataAccess.Configurations
@@ -22,10 +21,11 @@ namespace CafeMenuProject.DataAccess.Configurations
             Property(c => c.IsDeleted)
                 .HasColumnAnnotation("DefaultValue", false);
 
-            //Property(c => c.CreatedDate)
-            //    .HasColumnType("datetime2")
-            //    .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed)
-            //    .HasColumnAnnotation("DefaultValueSql", "GETDATE()");
+            Property(c => c.IsDeleted)
+                .IsRequired();
+
+            Property(c => c.CreatedDate)
+                .IsRequired();
         }
 
         #endregion
