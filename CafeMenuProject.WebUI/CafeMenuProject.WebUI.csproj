@@ -243,9 +243,9 @@
       <Project>{2FEA1C2A-8D31-48D4-A3A1-E43A2F77023F}</Project>
       <Name>CafeMenuProject.DataAccess</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CafeMenuProject.Entities\CafeMenuProject.Entities.csproj">
+    <ProjectReference Include="..\CafeMenuProject.Core\CafeMenuProject.Core.csproj">
       <Project>{1A9CE3E1-826A-45A7-B66F-51FFB8F76FD6}</Project>
-      <Name>CafeMenuProject.Entities</Name>
+      <Name>CafeMenuProject.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

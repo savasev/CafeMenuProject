@@ -1,7 +1,7 @@
-﻿using CafeMenuProject.Entities.Abstract;
+﻿using CafeMenuProject.Core.Abstract;
 using System;
 
-namespace CafeMenuProject.Entities
+namespace CafeMenuProject.Core.Entites
 {
     /// <summary>
     /// Category

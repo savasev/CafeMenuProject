@@ -1,4 +1,4 @@
-﻿using CafeMenuProject.Entities;
+﻿using CafeMenuProject.Core.Entites;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

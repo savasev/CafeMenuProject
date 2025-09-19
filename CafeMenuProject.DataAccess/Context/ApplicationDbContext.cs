@@ -1,5 +1,5 @@
-﻿using CafeMenuProject.DataAccess.Configurations;
-using CafeMenuProject.Entities;
+﻿using CafeMenuProject.Core.Entites;
+using CafeMenuProject.DataAccess.Configurations;
 using System.Data.Entity;
 
 namespace CafeMenuProject.DataAccess.Context

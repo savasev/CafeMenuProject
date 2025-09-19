@@ -1,4 +1,4 @@
-﻿using CafeMenuProject.Entities;
+﻿using CafeMenuProject.Core.Entites;
 using System.Data.Entity.ModelConfiguration;
 
 namespace CafeMenuProject.DataAccess.Configurations

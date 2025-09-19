@@ -1,6 +1,6 @@
-﻿using CafeMenuProject.DataAccess.Abstract;
+﻿using CafeMenuProject.Core.Abstract;
+using CafeMenuProject.DataAccess.Abstract;
 using CafeMenuProject.DataAccess.Context;
-using CafeMenuProject.Entities.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
