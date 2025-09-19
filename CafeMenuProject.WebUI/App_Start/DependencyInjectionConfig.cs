@@ -20,6 +20,7 @@ namespace CafeMenuProject.WebUI.App_Start
 
             container.RegisterType(typeof(IRepository<>), typeof(EfRepository<>), new HierarchicalLifetimeManager());
 
+            container.RegisterType<IUserService, UserService>(new HierarchicalLifetimeManager());
             container.RegisterType<ICategoryService, CategoryService>(new HierarchicalLifetimeManager());
             container.RegisterType<IProductService, ProductService>(new HierarchicalLifetimeManager());
             container.RegisterType<IPropertyService, PropertyService>(new HierarchicalLifetimeManager());
