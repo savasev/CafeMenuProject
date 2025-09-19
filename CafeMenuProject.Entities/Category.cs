@@ -16,7 +16,7 @@ namespace CafeMenuProject.Entities
 
         public bool IsDeleted { get; set; }
 
-        public DateTime  CreatedDate { get; set; }
+        //public DateTime  CreatedDate { get; set; }
 
         public int CreatorUserId { get; set; }
     }

@@ -1,15 +1,38 @@
-﻿using System;
+﻿using CafeMenuProject.Business.Abstract;
+using CafeMenuProject.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 
 namespace CafeMenuProject.WebUI.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        private readonly ICategoryService _categoryService;
+
+        #region Ctor
+
+        public HomeController(ICategoryService categoryService)
         {
+            _categoryService = categoryService;
+        }
+
+        #endregion
+
+        public async Task<ActionResult> Index()
+        {
+            await _categoryService.InsertCategoryAsync(new Category
+            {
+                CategoryName = "Test Kategori 1",
+                CreatorUserId = 1,
+                ParentCategoryId = null,
+                CreatedDate = DateTime.Now,
+            });
+
             return View();
         }
 

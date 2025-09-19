@@ -8,7 +8,7 @@ namespace CafeMenuProject.DataAccess.Context
     {
         #region Constructor
 
-        public ApplicationDbContext() : base("name=CafeMenuDbConnection")
+        public ApplicationDbContext() : base("CafeMenuDbConnection")
         {
         }
 

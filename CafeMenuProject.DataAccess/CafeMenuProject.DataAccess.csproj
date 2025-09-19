@@ -56,9 +56,9 @@
     <Compile Include="Configurations\CategoryConfiguration.cs" />
     <Compile Include="Configurations\ProductConfiguration.cs" />
     <Compile Include="Context\ApplicationDbContext.cs" />
+    <Compile Include="Context\CafeMenuDbConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\CafeMenuProject.Entities\CafeMenuProject.Entities.csproj">
       <Project>{1A9CE3E1-826A-45A7-B66F-51FFB8F76FD6}</Project>
