@@ -1,0 +1,69 @@
+## .NET Core / .NET 5+ / .NET Framework
+bin/
+obj/
+out/
+[Ll]og/
+*.log
+
+## User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## OS generated files
+.DS_Store
+Thumbs.db
+
+## NuGet
+*.nupkg
+packages/
+*.snupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Uncomment if using a global NuGet cache:
+# ~/.nuget/
+
+## Visual Studio
+.vs/
+.vscode/
+*.code-workspace
+
+## Rider
+.idea/
+*.sln.iml
+
+## ASP.NET
+wwwroot/lib/
+appsettings.Development.json
+
+## Entity Framework
+*.dbmdl
+*.jfm
+Migrations/
+
+## Publish
+publish/
+*.Publish.xml
+
+## Test results
+TestResults/
+*.trx
+*.coverage
+*.coveragejson
+
+## Others
+*.rej
+*.orig
+*.bak
+*.tmp
+
+# Ignore secrets and sensitive config (optional, if exists in your project)
+secrets.json
+appsettings.*.json
+!appsettings.json
+
+# Ignore node_modules if you use Node.js (e.g., in frontend or Blazor WebAssembly)
+node_modules/
