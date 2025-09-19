@@ -1,12 +1,7 @@
 ﻿using CafeMenuProject.Business.Abstract;
 using CafeMenuProject.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.UI.WebControls;
 
 namespace CafeMenuProject.WebUI.Controllers
 {
@@ -30,7 +25,7 @@ namespace CafeMenuProject.WebUI.Controllers
                 CategoryName = "Test Kategori 1",
                 CreatorUserId = 1,
                 ParentCategoryId = null,
-                CreatedDate = DateTime.Now,
+                //CreatedDate = DateTime.Now,
             });
 
             return View();

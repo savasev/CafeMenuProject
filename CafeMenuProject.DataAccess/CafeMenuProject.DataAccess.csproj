@@ -56,7 +56,6 @@
     <Compile Include="Configurations\CategoryConfiguration.cs" />
     <Compile Include="Configurations\ProductConfiguration.cs" />
     <Compile Include="Context\ApplicationDbContext.cs" />
-    <Compile Include="Context\CafeMenuDbConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
