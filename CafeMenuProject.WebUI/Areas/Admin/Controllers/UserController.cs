@@ -1,6 +1,6 @@
 ﻿namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
 {
-    public class CategoryController : BaseAdminController
+    public class UserController : BaseAdminController
     {
     }
 }
