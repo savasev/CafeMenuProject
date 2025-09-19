@@ -57,6 +57,7 @@
     <Compile Include="Configurations\ProductConfiguration.cs" />
     <Compile Include="Configurations\ProductPropertyConfiguration.cs" />
     <Compile Include="Configurations\PropertyConfiguration.cs" />
+    <Compile Include="Configurations\UserConfiguration.cs" />
     <Compile Include="Context\ApplicationDbContext.cs" />
     <Compile Include="Migrations\202509191903340_InitialCreate.cs" />
     <Compile Include="Migrations\202509191903340_InitialCreate.Designer.cs">

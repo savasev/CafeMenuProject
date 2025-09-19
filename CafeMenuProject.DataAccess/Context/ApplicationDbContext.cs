@@ -4,6 +4,9 @@ using System.Data.Entity;
 
 namespace CafeMenuProject.DataAccess.Context
 {
+    /// <summary>
+    /// Application db context
+    /// </summary>
     public class ApplicationDbContext : DbContext
     {
         #region Constructor
@@ -15,6 +18,8 @@ namespace CafeMenuProject.DataAccess.Context
         #endregion
 
         #region DbSets
+
+        public DbSet<User> Users { get; set; }
 
         public DbSet<Category> Categories { get; set; }
 
@@ -32,6 +37,7 @@ namespace CafeMenuProject.DataAccess.Context
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Configurations.Add(new UserConfiguration());
             modelBuilder.Configurations.Add(new CategoryConfiguration());
             modelBuilder.Configurations.Add(new ProductConfiguration());
             modelBuilder.Configurations.Add(new PropertyConfiguration());
