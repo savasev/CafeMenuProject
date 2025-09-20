@@ -1,4 +1,5 @@
 ﻿using CafeMenuProject.Business.Abstract;
+using CafeMenuProject.Core.Entities;
 using CafeMenuProject.WebUI.Areas.Admin.Models;
 using CafeMenuProject.WebUI.Areas.Admin.Models.Product;
 using CafeMenuProject.WebUI.Infrastructure;
@@ -71,6 +72,20 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
             return result;
         }
 
+        private async Task<CreateProductModel> PrepareCreateProductModelAsync(CreateProductModel model = null)
+        {
+            if (model == null)
+                model = new CreateProductModel();
+
+            model.AvailableCategories = (await _categoryService.GetAllCategoriesAsync()).Select(x => new SelectListItem
+            {
+                Value = x.CategoryId.ToString(),
+                Text = x.CategoryName,
+            }).ToList();
+
+            return model;
+        }
+
         #endregion
 
         #region Methods
@@ -104,9 +119,37 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
 
         #region Create
 
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
-            return View();
+            var model = await PrepareCreateProductModelAsync();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create(CreateProductModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var product = new Product
+                {
+                    ProductName = model.ProductName,
+                    CategoryId = model.CategoryId,
+                    Price = model.Price,
+                    ImagePath = model.ImagePath,
+                    CreatorUserId = 1,
+                    CreatedDate = DateTime.Now,
+                };
+
+                await _productService.InsertProductAsync(product);
+
+                return RedirectToAction("List");
+            }
+
+            model = await PrepareCreateProductModelAsync(model);
+
+            return View(model);
         }
 
         #endregion

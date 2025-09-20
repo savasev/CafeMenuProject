@@ -139,6 +139,7 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
                     CategoryName = model.CategoryName,
                     ParentCategoryId = model.ParentCategoryId,
                     CreatorUserId = 1,
+                    CreatedDate = DateTime.Now,
                 };
 
                 await _categoryService.InsertCategoryAsync(category);

@@ -2,7 +2,6 @@
 using CafeMenuProject.Core;
 using CafeMenuProject.Core.Entities;
 using CafeMenuProject.DataAccess.Abstract;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -60,8 +59,6 @@ namespace CafeMenuProject.Business.Concrete
 
         public async Task InsertCategoryAsync(Category category)
         {
-            category.CreatedDate = DateTime.Now;
-
             await _categoryRepository.InsertAsync(category);
         }
 
