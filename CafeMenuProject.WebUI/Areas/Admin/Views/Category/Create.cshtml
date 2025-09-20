@@ -27,15 +27,18 @@
                 <h3 class="card-title">@ViewBag.PageTitle</h3>
             </div>
             <div class="card-body">
-                <form action="/" method="post">
+                @using (Html.BeginForm("Create", "Category", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
                     <div class="form-group">
-                        @Html.LabelFor(x => x.CategoryName, "Kategori Adı", htmlAttributes: new { @class = "" })
+                        @Html.LabelFor(x => x.CategoryName, "Kategori Adı", htmlAttributes: new { @class = "form-label" })
                         @Html.TextBoxFor(x => x.CategoryName, new { @class = "form-control", placeholder = "Kategori adı" })
                         @Html.ValidationMessageFor(x => x.CategoryName, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(x => x.ParentCategoryId, "Üst Kategori", new { @class = "" })
+                        @Html.LabelFor(x => x.ParentCategoryId, "Üst Kategori", new { @class = "form-label" })
                         @Html.DropDownListFor(
                             x => x.ParentCategoryId,
                             new SelectList(Model.AvailableParentCategories, "Value", "Text"),
@@ -45,7 +48,11 @@
                         @Html.ValidationMessageFor(x => x.ParentCategoryId, "", new { @class = "text-danger" })
                     </div>
 
-                </form>
+                    <div class="form-group mt-3">
+                        <button type="submit" class="btn btn-primary">Kaydet</button>
+                        <a href="@Url.Action("Index", "Category")" class="btn btn-secondary">Vazgeç</a>
+                    </div>
+                }
             </div>
         </div>
     </div>

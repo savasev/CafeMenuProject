@@ -1,6 +1,6 @@
 ﻿using CafeMenuProject.Business.Abstract;
+using CafeMenuProject.Core.Entities;
 using CafeMenuProject.WebUI.Areas.Admin.Models.Categories;
-using CafeMenuProject.WebUI.Areas.Admin.Models.Products;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -63,6 +63,29 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
         public async Task<ActionResult> Create()
         {
             var model = await PrepareCreateCategoryModelAsync();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create(CreateCategoryModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var category = new Category
+                {
+                    CategoryName = model.CategoryName,
+                    ParentCategoryId = model.ParentCategoryId,
+                    CreatorUserId = 1,
+                };
+
+                await _categoryService.InsertCategoryAsync(category);
+
+                return RedirectToAction("List");
+            }
+
+            model = await PrepareCreateCategoryModelAsync(model);
 
             return View(model);
         }

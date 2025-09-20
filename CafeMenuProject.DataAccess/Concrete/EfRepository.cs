@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace CafeMenuProject.DataAccess.Concrete
@@ -39,9 +40,16 @@ namespace CafeMenuProject.DataAccess.Concrete
 
             if (!includeDeleted && typeof(ISoftDeletedEntity).IsAssignableFrom(typeof(TEntity)))
             {
-                query = query.OfType<ISoftDeletedEntity>()
-                             .Where(e => !e.IsDeleted)
-                             .OfType<TEntity>();
+                //query = query.Cast<ISoftDeletedEntity>()
+                //             .Where(e => !e.IsDeleted)
+                //             .Cast<TEntity>();
+
+                var parameter = Expression.Parameter(typeof(TEntity), "e");
+                var property = Expression.Property(parameter, "IsDeleted");
+                var condition = Expression.Equal(property, Expression.Constant(false));
+                var lambda = Expression.Lambda<Func<TEntity, bool>>(condition, parameter);
+
+                query = query.Where(lambda);
             }
 
             return query;
