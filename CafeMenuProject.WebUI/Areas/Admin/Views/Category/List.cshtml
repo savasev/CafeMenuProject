@@ -41,6 +41,13 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-6 offset-2">
+                                <button type="button" class="btn btn-primary btn-search" id="search-categories">
+                                    <i class="fa fa-search" aria-hidden="true"></i> Ara
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -71,7 +78,7 @@
 
     <script>
         $(function () {
-            $('#categories-datatable').DataTable({
+            var table = $('#categories-datatable').DataTable({
                 processing: true,
                 serverSide: true,
                 ordering: false,
@@ -117,6 +124,10 @@
                 ],
             });
 
+            $('#search-categories').on('click', function () {
+                table.ajax.reload();
+            });
+
             $('#categories-datatable').on('click', '.delete-btn', function () {
 
                 var id = $(this).data('id');
@@ -142,7 +153,8 @@
                                         body: 'Kategori başarıyla silindi.'
                                     });
 
-                                    $('#categories-datatable').DataTable().ajax.reload();
+                                    table.ajax.reload();
+
                                 } else {
                                     var message = res.message || 'Silme işlemi başarısız oldu.';
 
