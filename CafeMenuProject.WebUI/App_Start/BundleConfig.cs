@@ -11,7 +11,9 @@ namespace CafeMenuProject.WebUI
 
             bundles.Add(new StyleBundle("~/bundles/admin/css").Include(
                 "~/Content/adminlte/plugins/fontawesome-free/css/all.min.css",
+                "~/Content/adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css",
                 "~/Content/adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css",
+                "~/Content/plugins/toastr/toastr.min.css",
                 "~/Content/adminlte/dist/css/adminlte.min.css",
                 "~/Content/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css",
                 "~/Content/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css",
@@ -45,6 +47,14 @@ namespace CafeMenuProject.WebUI
                 "~/Content/adminlte/plugins/moment/moment.min.js"
             ));
             
+            bundles.Add(new ScriptBundle("~/bundles/admin/sweetalert2").Include(
+                "~/Content/adminlte/plugins/sweetalert2/sweetalert2.min.js"
+            ));
+
+            bundles.Add(new ScriptBundle("~/bundles/admin/toastr").Include(
+                "~/Content/plugins/toastr/toastr.min.js"
+            ));
+
             #endregion
 
             #region Other bundles
