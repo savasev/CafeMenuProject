@@ -20,6 +20,7 @@ namespace CafeMenuProject.WebUI
 
             bundles.Add(new ScriptBundle("~/bundles/adminlte/js").Include(
                 "~/Content/adminlte/plugins/jquery/jquery.min.js",
+                "~/Content/adminlte/plugins/jquery-ui/jquery-ui.min.js",
                 "~/Content/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js",
                 "~/Content/adminlte/plugins/chart.js/Chart.min.js",
                 "~/Content/adminlte/plugins/sparklines/sparkline.js",
@@ -31,9 +32,7 @@ namespace CafeMenuProject.WebUI
                 "~/Content/adminlte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js",
                 "~/Content/adminlte/plugins/summernote/summernote-bs4.min.js",
                 "~/Content/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js",
-                "~/Content/adminlte/dist/js/adminlte.js",
-                "~/Content/adminlte/dist/js/demo.js",
-                "~/Content/adminlte/dist/js/pages/dashboard.js"
+                "~/Content/adminlte/dist/js/adminlte.js"
             ));
         }
     }

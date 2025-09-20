@@ -2243,6 +2243,10 @@
     <Content Include="Content\adminlte\plugins\summernote\summernote.js.map" />
     <Content Include="Content\adminlte\plugins\summernote\summernote.min.js.map" />
     <Content Include="Content\adminlte\plugins\toastr\toastr.js.map" />
+    <Content Include="Areas\Admin\Views\Shared\Partials\_Navbar.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Partials\_MainSidebar.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Partials\_MainFooter.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Partials\_ControlSidebar.cshtml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
