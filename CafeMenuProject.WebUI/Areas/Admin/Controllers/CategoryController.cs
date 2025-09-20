@@ -85,6 +85,9 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
         [HttpPost]
         public async Task<ActionResult> CategoryList(CategorySearchModel searchModel)
         {
+            if (searchModel == null)
+                throw new ArgumentNullException(nameof(searchModel));
+
             var pagedCategories = await _categoryService.GetAllCategoriesAsync(categoryName: searchModel.CategoryName,
                 pageIndex: searchModel.PageIndex,
                 pageSize: searchModel.PageSize);
