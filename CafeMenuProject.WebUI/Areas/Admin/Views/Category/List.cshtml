@@ -19,6 +19,73 @@
 
 <section class="content">
     <div class="container-fluid">
-
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-success card-outline">
+                    <div class="card-header with-border clearfix">
+                        <h3 class="card-title">@ViewBag.PageTitle</h3>
+                    </div>
+                    <div class="card-body">
+                        <table id="categories-datatable" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th>Kategori Adı</th>
+                                    <th class="text-center">İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
+
+@section scripts {
+
+    <script>
+        $(function () {
+            $('#categories-datatable').DataTable({
+                processing: true,
+                serverSide: true,
+                ordering: false,
+                responsive: true,
+                lengthChange: false,
+                autoWidth: false,
+                ajax: {
+                    url: '@Url.Action("CategoryList", "Category")',
+                    type: 'POST',
+                    data: function (d) {
+                        return {
+                            Draw: d.draw,
+                            PageIndex: Math.floor(d.start / d.length),
+                            PageSize: d.length,
+                            //SearchValue: d.search.value
+                        };
+                    }
+                },
+                columns: [
+                    {
+                        data: 'CategoryId',
+                        width: '5%',
+                        className: 'text-center'
+                    },
+                    {
+                        data: 'CategoryName'
+                    },
+                    {
+                        data: null,
+                        width: '15%',
+                        className: 'text-center',
+                        render: function (data, type, row) {
+                            return `<a href='/Admin/Category/Edit/${row.CategoryId}' class='btn btn-sm btn-primary'>Edit</a>
+                                    <a href='/Admin/Category/Delete/${row.CategoryId}' class='btn btn-sm btn-danger'>Delete</a>`;
+                        }
+                    }
+                ],
+            });
+        });
+    </script>
+}
