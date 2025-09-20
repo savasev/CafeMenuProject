@@ -128,7 +128,7 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
 
             var model = await PrepareEditCategoryModelAsync(category);
 
-            return View();
+            return View(model);
         }
 
         [HttpPost]
@@ -137,7 +137,7 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
         {
             var category = await _categoryService.GetCategoryByIdAsync(model.CategoryId);
             if (category == null || category.IsDeleted)
-                throw new ArgumentNullException(nameof(category));
+                return RedirectToAction("List");
 
             if (ModelState.IsValid)
             {

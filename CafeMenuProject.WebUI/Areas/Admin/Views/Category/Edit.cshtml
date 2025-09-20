@@ -43,7 +43,7 @@
                         @Html.LabelFor(x => x.ParentCategoryId, "Üst Kategori", new { @class = "form-label" })
                         @Html.DropDownListFor(
                             x => x.ParentCategoryId,
-                            new SelectList(Model.AvailableParentCategories, "Value", "Text"),
+                            new SelectList(Model.AvailableParentCategories, "Value", "Text", Model.ParentCategoryId),
                             "Seçiniz...",
                             new { @class = "form-control" }
                         )
