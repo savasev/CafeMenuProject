@@ -9,7 +9,7 @@ namespace CafeMenuProject.WebUI
         {
             #region Admin area
 
-            bundles.Add(new StyleBundle("~/bundles/adminlte/css").Include(
+            bundles.Add(new StyleBundle("~/bundles/admin/css").Include(
                 "~/Content/adminlte/plugins/fontawesome-free/css/all.min.css",
                 "~/Content/adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css",
                 "~/Content/adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css",
@@ -20,7 +20,7 @@ namespace CafeMenuProject.WebUI
                 "~/Content/adminlte/plugins/summernote/summernote-bs4.min.css"
             ));
 
-            bundles.Add(new ScriptBundle("~/bundles/adminlte/js").Include(
+            bundles.Add(new ScriptBundle("~/bundles/admin/js").Include(
                 "~/Content/adminlte/plugins/jquery/jquery.min.js",
                 "~/Content/adminlte/plugins/jquery-ui/jquery-ui.min.js",
                 "~/Content/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js",
