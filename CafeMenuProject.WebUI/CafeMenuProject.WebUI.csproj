@@ -2247,6 +2247,9 @@
     <Content Include="Areas\Admin\Views\Shared\Partials\_MainSidebar.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\Partials\_MainFooter.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\Partials\_ControlSidebar.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\List.cshtml" />
+    <Content Include="Areas\Admin\Views\User\List.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Dashboard.cshtml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
@@ -2273,8 +2276,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Admin\Views\Home\" />
-    <Folder Include="Areas\Admin\Views\Product\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

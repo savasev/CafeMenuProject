@@ -29,8 +29,6 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
 
         public ActionResult List()
         {
-            ViewBag.Title = "Kategoriler";
-
             return View();
         }
 
