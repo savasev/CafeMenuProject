@@ -31,6 +31,21 @@ namespace CafeMenuProject.DataAccess.Concrete
 
         #endregion
 
+        #region Utilities
+
+        private IQueryable<TEntity> AddDeletedFilter(IQueryable<TEntity> query, in bool includeDeleted)
+        {
+            if (includeDeleted)
+                return query;
+
+            if (typeof(TEntity).GetInterface(nameof(ISoftDeletedEntity)) == null)
+                return query;
+
+            return query.OfType<ISoftDeletedEntity>().Where(x => !x.IsDeleted).OfType<TEntity>();
+        }
+
+        #endregion
+
         #region Methods
 
         public async Task DeleteAsync(TEntity entity)
@@ -60,32 +75,26 @@ namespace CafeMenuProject.DataAccess.Concrete
             return await query.ToListAsync();
         }
 
-        public async Task<IPagedList<TEntity>> GetAllPagedAsync(Func<IQueryable<TEntity>, Task<IQueryable<TEntity>>> func = null,
+        public async Task<IPagedList<TEntity>> GetAllPagedAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> func = null,
             int pageIndex = 0,
             int pageSize = int.MaxValue,
-            bool getOnlyTotalCount = false)
+            bool getOnlyTotalCount = false,
+            bool includeDeleted = true)
         {
-            var query = Table;
+            var query = AddDeletedFilter(Table, includeDeleted);
 
-            if (func != null)
-            {
-                query = await func(query);
-            }
+            query = func != null ? func(query) : query;
 
-            if (getOnlyTotalCount)
-            {
-                var totalCount = await query.CountAsync();
-                return new PagedList<TEntity>(new List<TEntity>(), pageIndex, pageSize, totalCount);
-            }
+            pageSize = Math.Max(pageSize, 1);
 
-            var totalItems = await query.CountAsync();
+            var count = await query.CountAsync();
 
-            var items = await query
-                .Skip(pageIndex * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
+            var data = new List<TEntity>();
 
-            return new PagedList<TEntity>(items, pageIndex, pageSize, totalItems);
+            if (!getOnlyTotalCount)
+                data.AddRange(await query.Skip(pageIndex * pageSize).Take(pageSize).ToListAsync());
+
+            return new PagedList<TEntity>(data, pageIndex, pageSize, count);
         }
 
         public async Task<TEntity> GetByIdAsync(int id)

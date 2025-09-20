@@ -3,7 +3,6 @@ using CafeMenuProject.Core;
 using CafeMenuProject.Core.Entities;
 using CafeMenuProject.DataAccess.Abstract;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -36,15 +35,7 @@ namespace CafeMenuProject.Business.Concrete
             await _categoryRepository.DeleteAsync(category);
         }
 
-        public async Task<IList<Category>> GetAllCategoriesAsync()
-        {
-            return await _categoryRepository.GetAllAsync(query =>
-            {
-                return query.Where(x => !x.IsDeleted);
-            });
-        }
-
-        public async Task<IPagedList<Category>> GetAllCategoriesAsync(string categoryName,
+        public async Task<IPagedList<Category>> GetAllCategoriesAsync(string categoryName = "",
             int pageIndex = 0,
             int pageSize = int.MaxValue)
         {
@@ -55,7 +46,9 @@ namespace CafeMenuProject.Business.Concrete
                 
                 query = query.Where(x => !x.IsDeleted);
 
-                return (Task<IQueryable<Category>>)query.OrderBy(c => c.CategoryId);
+                query = query.OrderBy(c => c.CategoryId);
+
+                return query;
 
             }, pageIndex, pageSize);
         }

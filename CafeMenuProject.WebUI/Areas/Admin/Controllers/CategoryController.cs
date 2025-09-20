@@ -81,9 +81,23 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
         {
             var categories = await _categoryService.GetAllCategoriesAsync();
 
-
-
             return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> List(CategorySearchModel searchModel)
+        {
+            var pagedCategories = await _categoryService.GetAllCategoriesAsync(categoryName: searchModel.CategoryName,
+                pageIndex: searchModel.PageIndex,
+                pageSize: searchModel.PageSize - 1);
+
+            return Json(new
+            {
+                draw = searchModel.Draw,
+                recordsTotal = pagedCategories.TotalCount,
+                recordsFiltered = pagedCategories.TotalCount,
+                data = pagedCategories
+            });
         }
 
         #endregion
