@@ -17,8 +17,7 @@ namespace CafeMenuProject.DataAccess.Abstract
         Task<IPagedList<TEntity>> GetAllPagedAsync(Func<IQueryable<TEntity>, Task<IQueryable<TEntity>>> func = null,
             int pageIndex = 0,
             int pageSize = int.MaxValue,
-            bool getOnlyTotalCount = false,
-            bool includeDeleted = true);
+            bool getOnlyTotalCount = false);
 
         Task<TEntity> GetByIdAsync(int id);
 

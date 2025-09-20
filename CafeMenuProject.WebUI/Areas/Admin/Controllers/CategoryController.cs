@@ -77,8 +77,12 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
             return RedirectToAction("List");
         }
 
-        public ActionResult List()
+        public async Task<ActionResult> List()
         {
+            var categories = await _categoryService.GetAllCategoriesAsync();
+
+
+
             return View();
         }
 

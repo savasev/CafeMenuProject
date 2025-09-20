@@ -3,6 +3,7 @@ using CafeMenuProject.Core.Entities;
 using CafeMenuProject.DataAccess.Abstract;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CafeMenuProject.Business.Concrete
@@ -36,7 +37,10 @@ namespace CafeMenuProject.Business.Concrete
 
         public async Task<IList<Category>> GetAllCategoriesAsync()
         {
-            return await _categoryRepository.GetAllAsync();
+            return await _categoryRepository.GetAllAsync(query =>
+            {
+                return query.Where(x => !x.IsDeleted);
+            });
         }
 
         public async Task<Category> GetCategoryByIdAsync(int id)

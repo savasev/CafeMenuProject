@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace CafeMenuProject.DataAccess.Concrete
@@ -34,25 +33,9 @@ namespace CafeMenuProject.DataAccess.Concrete
 
         #region Methods
 
-        public IQueryable<TEntity> Query(bool includeDeleted = false)
+        public IQueryable<TEntity> Query()
         {
-            IQueryable<TEntity> query = _context.Set<TEntity>().AsNoTracking();
-
-            if (!includeDeleted && typeof(ISoftDeletedEntity).IsAssignableFrom(typeof(TEntity)))
-            {
-                //query = query.Cast<ISoftDeletedEntity>()
-                //             .Where(e => !e.IsDeleted)
-                //             .Cast<TEntity>();
-
-                var parameter = Expression.Parameter(typeof(TEntity), "e");
-                var property = Expression.Property(parameter, "IsDeleted");
-                var condition = Expression.Equal(property, Expression.Constant(false));
-                var lambda = Expression.Lambda<Func<TEntity, bool>>(condition, parameter);
-
-                query = query.Where(lambda);
-            }
-
-            return query;
+            return _context.Set<TEntity>().AsNoTracking();            
         }
 
         public async Task DeleteAsync(TEntity entity)
@@ -85,10 +68,9 @@ namespace CafeMenuProject.DataAccess.Concrete
         public async Task<IPagedList<TEntity>> GetAllPagedAsync(Func<IQueryable<TEntity>, Task<IQueryable<TEntity>>> func = null,
             int pageIndex = 0,
             int pageSize = int.MaxValue,
-            bool getOnlyTotalCount = false,
-            bool includeDeleted = true)
+            bool getOnlyTotalCount = false)
         {
-            var query = Query(includeDeleted);
+            var query = Query();
 
             if (func != null)
             {
