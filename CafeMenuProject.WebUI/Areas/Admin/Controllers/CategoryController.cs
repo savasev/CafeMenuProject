@@ -87,7 +87,7 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
         {
             var pagedCategories = await _categoryService.GetAllCategoriesAsync(categoryName: searchModel.CategoryName,
                 pageIndex: searchModel.PageIndex,
-                pageSize: searchModel.PageSize - 1);
+                pageSize: searchModel.PageSize);
 
             return Json(new
             {
