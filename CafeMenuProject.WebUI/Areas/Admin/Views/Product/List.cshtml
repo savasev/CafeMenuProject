@@ -29,7 +29,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-5">
                                 <div class="form-group row">
                                     <div class="col-md-4">
                                         @Html.LabelFor(x => x.ProductName, "Ürün Adı", htmlAttributes: new { @class = "col-form-label float-right" })
@@ -39,9 +39,24 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-6">
+                                <div class="form-group row">
+                                    <div class="col-md-4">
+                                        @Html.LabelFor(x => x.CategoryId, "Kategori", htmlAttributes: new { @class = "col-form-label float-right" })
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.DropDownListFor(
+                                            x => x.CategoryId,
+                                            new SelectList(Model.AvailableCategories, "Value", "Text"),
+                                            "Kategori seçiniz...",
+                                            new { @class = "form-control" }
+                                        )
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
-                            <div class="col-6 offset-2">
+                            <div class="col-12 text-center">
                                 <button type="button" class="btn btn-primary btn-search" id="search-products">
                                     <i class="fa fa-search" aria-hidden="true"></i> Ara
                                 </button>
@@ -94,6 +109,8 @@
                             Draw: d.draw,
                             PageIndex: Math.floor(d.start / d.length),
                             PageSize: d.length,
+                            ProductName: $('#@Html.IdFor(m => m.ProductName)').val(),
+                            CategoryId: $('#@Html.IdFor(m => m.CategoryId)').val(),
                         };
                     }
                 },
