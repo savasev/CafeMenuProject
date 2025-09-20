@@ -1,4 +1,5 @@
-﻿using CafeMenuProject.Core.Abstract;
+﻿using CafeMenuProject.Core;
+using CafeMenuProject.Core.Abstract;
 using CafeMenuProject.DataAccess.Abstract;
 using CafeMenuProject.DataAccess.Context;
 using System;
@@ -64,13 +65,42 @@ namespace CafeMenuProject.DataAccess.Concrete
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IList<TEntity>> GetAllAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> filter = null)
+        public async Task<IList<TEntity>> GetAllAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> func = null)
         {
             var query = Query();
-            if (filter != null)
-                query = filter(query);
+            if (func != null)
+                query = func(query);
 
             return await query.ToListAsync();
+        }
+
+        public async Task<IPagedList<TEntity>> GetAllPagedAsync(Func<IQueryable<TEntity>, Task<IQueryable<TEntity>>> func = null,
+            int pageIndex = 0,
+            int pageSize = int.MaxValue,
+            bool getOnlyTotalCount = false,
+            bool includeDeleted = true)
+        {
+            var query = Query(includeDeleted);
+
+            if (func != null)
+            {
+                query = await func(query);
+            }
+
+            if (getOnlyTotalCount)
+            {
+                var totalCount = await query.CountAsync();
+                return new PagedList<TEntity>(new List<TEntity>(), pageIndex, pageSize, totalCount);
+            }
+
+            var totalItems = await query.CountAsync();
+
+            var items = await query
+                .Skip(pageIndex * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PagedList<TEntity>(items, pageIndex, pageSize, totalItems);
         }
 
         public async Task<TEntity> GetByIdAsync(int id)
