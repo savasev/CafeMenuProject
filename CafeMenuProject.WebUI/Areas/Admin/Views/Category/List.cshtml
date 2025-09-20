@@ -25,6 +25,29 @@
         <div class="row">
             <div class="col-12">
                 <div class="card card-default card-outline">
+                    <div class="card-header with-border clearfix">
+                        <h3 class="card-title">Arama</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group row">
+                                    <div class="col-md-4">
+                                        @Html.LabelFor(x => x.CategoryName, "Kategori Adı", htmlAttributes: new { @class = "col-form-label float-right" })
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(x => x.CategoryName, new { @class = "form-control", placeholder = "Kategori adı" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-default card-outline">
                     <div class="card-body">
                         <table id="categories-datatable" class="table table-bordered table-striped">
                             <thead>
@@ -65,6 +88,7 @@
                             Draw: d.draw,
                             PageIndex: Math.floor(d.start / d.length),
                             PageSize: d.length,
+                            CategoryName: $('#@Html.IdFor(m => m.CategoryName)').val()
                         };
                     }
                 },
