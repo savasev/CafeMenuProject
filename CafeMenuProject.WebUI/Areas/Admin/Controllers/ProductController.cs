@@ -22,6 +22,8 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
 
         #region Methods
 
+        #region List
+
         public ActionResult Index()
         {
             return RedirectToAction("List");
@@ -31,6 +33,35 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
         {
             return View();
         }
+
+        #endregion
+
+        #region Create
+
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        #endregion
+
+        #region Edit
+
+        public ActionResult Edit(int id)
+        {
+            return View();
+        }
+
+        #endregion
+
+        #region Delete
+
+        public ActionResult Delete(int id)
+        {
+            return View();
+        }
+
+        #endregion
 
         #endregion
     }
