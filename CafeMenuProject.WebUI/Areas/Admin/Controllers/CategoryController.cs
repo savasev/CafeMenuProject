@@ -174,9 +174,16 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
 
         #region Delete
 
-        public ActionResult Delete(int id)
+        [HttpPost]
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            var category = await _categoryService.GetCategoryByIdAsync(id);
+            if (category == null || category.IsDeleted)
+                return Json(new { success = false, message = "Kategori bulunamadı" });
+
+            await _categoryService.DeleteCategoryAsync(category);
+
+            return Json(new { success = true });
         }
 
         #endregion

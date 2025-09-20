@@ -17,7 +17,8 @@ namespace CafeMenuProject.WebUI
                 "~/Content/adminlte/dist/css/adminlte.min.css",
                 "~/Content/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css",
                 "~/Content/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css",
-                "~/Content/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css"
+                "~/Content/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css",
+                "~/Content/adminlte/dist/css/custom-styles.css"
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/admin/jquery").Include(

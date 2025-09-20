@@ -84,11 +84,60 @@
                         width: '15%',
                         className: 'text-center',
                         render: function (data, type, row) {
-                            return `<a href='/Admin/Category/Edit/${row.CategoryId}' class='btn btn-sm btn-primary'>Edit</a>
-                                    <a href='/Admin/Category/Delete/${row.CategoryId}' class='btn btn-sm btn-danger'>Delete</a>`;
+                            return `<a href='/Admin/Category/Edit/${row.CategoryId}' class='btn btn-primary btn-sm'>Düzenle</a>
+                                    <button class="btn btn-danger btn-sm delete-btn" data-id="${row.CategoryId}">Sil</button>`;
                         }
                     }
                 ],
+            });
+
+            $('#categories-datatable').on('click', '.delete-btn', function () {
+
+                var id = $(this).data('id');
+
+                Swal.fire({
+                    title: 'Emin misiniz?',
+                    text: "Bu kaydı silmek istediğinize emin misiniz?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Evet, sil!',
+                    cancelButtonText: 'Vazgeç'
+                }).then((result) => {
+
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '/Admin/Category/Delete/' + id,
+                            type: 'POST',
+                            success: function (res) {
+                                if (res.success) {
+                                    $(document).Toasts('create', {
+                                        class: 'bg-success',
+                                        title: 'Başarılı',
+                                        body: 'Kategori başarıyla silindi.'
+                                    });
+
+                                    $('#categories-datatable').DataTable().ajax.reload();
+                                } else {
+                                    var message = res.message || 'Silme işlemi başarısız oldu.';
+
+                                    $(document).Toasts('create', {
+                                        class: 'bg-danger',
+                                        title: 'Hata',
+                                        body: message,
+                                    });
+                                }
+                            },
+                            error: function () {
+                                $(document).Toasts('create', {
+                                    class: 'bg-danger',
+                                    title: 'Hata',
+                                    subtitle: '',
+                                    body: 'Silme işlemi başarısız oldu.'
+                                });
+                            }
+                        });
+                    }
+                });
             });
         });
     </script>
