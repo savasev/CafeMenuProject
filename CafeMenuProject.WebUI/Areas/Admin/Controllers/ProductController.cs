@@ -2,6 +2,7 @@
 using CafeMenuProject.Core.Entities;
 using CafeMenuProject.WebUI.Areas.Admin.Models;
 using CafeMenuProject.WebUI.Areas.Admin.Models.Product;
+using CafeMenuProject.WebUI.Filters;
 using CafeMenuProject.WebUI.Infrastructure;
 using System;
 using System.Linq;
@@ -126,9 +127,9 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
             return View(model);
         }
 
-        [HttpPost]
+        [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(CreateProductModel model)
+        public async Task<ActionResult> Create(CreateProductModel model, bool continueEditing)
         {
             if (ModelState.IsValid)
             {
@@ -144,7 +145,10 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
 
                 await _productService.InsertProductAsync(product);
 
-                return RedirectToAction("List");
+                if (!continueEditing)
+                    return RedirectToAction("List");
+
+                return RedirectToAction("Edit", new { id = product.ProductId });
             }
 
             model = await PrepareCreateProductModelAsync(model);
@@ -165,9 +169,16 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
 
         #region Delete
 
-        public ActionResult Delete(int id)
+        [HttpPost]
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            var product = await _productService.GetProductByIdAsync(id);
+            if (product == null || product.IsDeleted)
+                return Json(new { success = false, message = "Ürün bulunamadı" });
+
+            await _productService.DeleteProductAsync(product);
+
+            return Json(new { success = true });
         }
 
         #endregion

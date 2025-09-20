@@ -33,24 +33,37 @@
                     @Html.AntiForgeryToken()
 
                     <div class="form-group">
-                        @Html.LabelFor(x => x.CategoryName, "Kategori Adı", htmlAttributes: new { @class = "form-label" })
-                        @Html.TextBoxFor(x => x.CategoryName, new { @class = "form-control", placeholder = "Kategori adı" })
-                        @Html.ValidationMessageFor(x => x.CategoryName, "", new { @class = "text-danger" })
+                        @Html.LabelFor(x => x.ProductName, "Ürün Adı", htmlAttributes: new { @class = "form-label" })
+                        @Html.TextBoxFor(x => x.ProductName, new { @class = "form-control", placeholder = "Ürün adı" })
+                        @Html.ValidationMessageFor(x => x.ProductName, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(x => x.ParentCategoryId, "Üst Kategori", new { @class = "form-label" })
+                        @Html.LabelFor(x => x.CategoryId, "Kategori", new { @class = "form-label" })
                         @Html.DropDownListFor(
-                            x => x.ParentCategoryId,
-                            new SelectList(Model.AvailableParentCategories, "Value", "Text"),
+                            x => x.CategoryId,
+                            new SelectList(Model.AvailableCategories, "Value", "Text"),
                             "Seçiniz...",
                             new { @class = "form-control" }
                         )
-                        @Html.ValidationMessageFor(x => x.ParentCategoryId, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(x => x.CategoryId, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Price, "Ürün Fiyatı", htmlAttributes: new { @class = "form-label" })
+                        @Html.TextBoxFor(x => x.Price, new { @class = "form-control", placeholder = "Ürün fiyatı" })
+                        @Html.ValidationMessageFor(x => x.Price, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ImagePath, "Ürün Resmi", htmlAttributes: new { @class = "form-label" })
+                        @Html.TextBoxFor(x => x.ImagePath, new { @class = "form-control", placeholder = "Ürün resmi" })
+                        @Html.ValidationMessageFor(x => x.ImagePath, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="form-group mt-3">
-                        <button type="submit" class="btn btn-primary">Kaydet</button>
+                        <button type="submit" class="btn btn-primary" name="save">Kaydet</button>
+                        <button type="submit" class="btn btn-primary" name="save-continue">Kaydet ve Devam Et</button>
                         <a href="@Url.Action("Index", "Product")" class="btn btn-secondary">Vazgeç</a>
                     </div>
                 }
