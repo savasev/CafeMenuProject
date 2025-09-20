@@ -1,5 +1,5 @@
-﻿using CafeMenuProject.Core.Entities;
-using System.Collections.Generic;
+﻿using CafeMenuProject.Core;
+using CafeMenuProject.Core.Entities;
 using System.Threading.Tasks;
 
 namespace CafeMenuProject.Business.Abstract
@@ -9,7 +9,10 @@ namespace CafeMenuProject.Business.Abstract
     /// </summary>
     public interface IProductService
     {
-        Task<IList<Product>> GetAllProductsAsync();
+        Task<IPagedList<Product>> GetAllProductsAsync(string productName = "",
+            int? categoryId = null,
+            int pageIndex = 0,
+            int pageSize = int.MaxValue);
 
         Task<Product> GetProductByIdAsync(int id);
 

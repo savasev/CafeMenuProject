@@ -1,7 +1,8 @@
 ﻿using CafeMenuProject.Business.Abstract;
+using CafeMenuProject.Core;
 using CafeMenuProject.Core.Entities;
 using CafeMenuProject.DataAccess.Abstract;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CafeMenuProject.Business.Concrete
@@ -33,9 +34,26 @@ namespace CafeMenuProject.Business.Concrete
             await _productRepository.DeleteAsync(product);
         }
 
-        public async Task<IList<Product>> GetAllProductsAsync()
+        public async Task<IPagedList<Product>> GetAllProductsAsync(string productName = "",
+            int? categoryId = null,
+            int pageIndex = 0,
+            int pageSize = int.MaxValue)
         {
-            return await _productRepository.GetAllAsync();
+            return await _productRepository.GetAllPagedAsync(query =>
+            {
+                if (!string.IsNullOrWhiteSpace(productName))
+                    query = query.Where(x => x.ProductName.Contains(productName));
+
+                if (categoryId > 0)
+                    query = query.Where(x => x.CategoryId == categoryId);
+
+                query = query.Where(x => !x.IsDeleted);
+
+                query = query.OrderBy(x => x.ProductId);
+
+                return query;
+
+            }, pageIndex, pageSize);
         }
 
         public async Task<Product> GetProductByIdAsync(int id)
