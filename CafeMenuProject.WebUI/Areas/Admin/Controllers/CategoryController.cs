@@ -1,6 +1,8 @@
 ﻿using CafeMenuProject.Business.Abstract;
 using CafeMenuProject.Core.Entities;
+using CafeMenuProject.WebUI.Areas.Admin.Models;
 using CafeMenuProject.WebUI.Areas.Admin.Models.Categories;
+using CafeMenuProject.WebUI.Infrastructure;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -66,27 +68,27 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
             return model;
         }
 
-        //private async Task<DataTableResult> PrepareCategoryDataTableResultAsync(CategorySearchModel searchModel)
-        //{
-        //    var pagedCategories = await _categoryService.GetAllCategoriesAsync(categoryName: searchModel.CategoryName,
-        //        pageIndex: searchModel.PageIndex,
-        //        pageSize: searchModel.PageSize);
+        private async Task<DataTableResult<CategoryViewModel>> PrepareCategoryDataTableResultAsync(CategorySearchModel searchModel)
+        {
+            var pagedCategories = await _categoryService.GetAllCategoriesAsync(categoryName: searchModel.CategoryName,
+                pageIndex: searchModel.PageIndex,
+                pageSize: searchModel.PageSize);
 
-        //    var result = new DataTableResult
-        //    {
-        //        Draw = searchModel.Draw,
-        //        RecordsTotal = pagedCategories.TotalCount,
-        //        RecordsFiltered = pagedCategories.TotalCount,
-        //        Data = pagedCategories.Select(x => new CategoryViewModel
-        //        {
-        //            CategoryId = x.CategoryId,
-        //            CategoryName = x.CategoryName,
-        //            CreatedDate = x.CreatedDate.ToString("g"),
-        //        }).ToList()
-        //    };
+            var result = new DataTableResult<CategoryViewModel>
+            {
+                Draw = searchModel.Draw,
+                RecordsTotal = pagedCategories.TotalCount,
+                RecordsFiltered = pagedCategories.TotalCount,
+                Data = pagedCategories.Select(x => new CategoryViewModel
+                {
+                    CategoryId = x.CategoryId,
+                    CategoryName = x.CategoryName,
+                    CreatedDate = x.CreatedDate.ToString("g"),
+                }).ToList()
+            };
 
-        //    return result;
-        //}
+            return result;
+        }
 
         #endregion
 
@@ -110,19 +112,9 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
             if (searchModel == null)
                 throw new ArgumentNullException(nameof(searchModel));
 
-            //var dataTableResult = await PrepareCategoryDataTableResultAsync(searchModel);
+            var dataTableResult = await PrepareCategoryDataTableResultAsync(searchModel);
 
-            var pagedCategories = await _categoryService.GetAllCategoriesAsync(categoryName: searchModel.CategoryName,
-                pageIndex: searchModel.PageIndex,
-                pageSize: searchModel.PageSize);
-
-            return Json(new
-            {
-                draw = searchModel.Draw,
-                recordsTotal = pagedCategories.TotalCount,
-                recordsFiltered = pagedCategories.TotalCount,
-                data = pagedCategories
-            });
+            return new JsonCamelCaseResult { Data = dataTableResult, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
 
         #endregion

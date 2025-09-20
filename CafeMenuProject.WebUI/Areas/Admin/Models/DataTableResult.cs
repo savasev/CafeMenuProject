@@ -1,26 +1,21 @@
-﻿using Newtonsoft.Json;
-using System.Collections;
+﻿using System.Collections.Generic;
 
 namespace CafeMenuProject.WebUI.Areas.Admin.Models
 {
     /// <summary>
     /// Data table result model
     /// </summary>
-    public class DataTableResult
+    public class DataTableResult<T>
     {
         #region Properties
 
-        [JsonProperty("draw")]
         public int Draw { get; set; }
 
-        [JsonProperty("recordsTotal")]
         public int RecordsTotal { get; set; }
 
-        [JsonProperty("recordsFiltered")]
         public int RecordsFiltered { get; set; }
 
-        [JsonProperty("data")]
-        public IEnumerable Data { get; set; }
+        public List<T> Data { get; set; }
 
         #endregion
     }

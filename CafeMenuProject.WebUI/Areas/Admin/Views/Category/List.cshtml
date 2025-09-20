@@ -72,20 +72,23 @@
                 },
                 columns: [
                     {
-                        data: 'CategoryId',
+                        data: 'categoryId',
                         width: '5%',
                         className: 'text-center'
                     },
                     {
-                        data: 'CategoryName'
+                        data: 'categoryName'
+                    },
+                    {
+                        data: 'createdDate'
                     },
                     {
                         data: null,
                         width: '15%',
                         className: 'text-center',
                         render: function (data, type, row) {
-                            return `<a href='/Admin/Category/Edit/${row.CategoryId}' class='btn btn-primary btn-sm'>Düzenle</a>
-                                    <button class="btn btn-danger btn-sm delete-btn" data-id="${row.CategoryId}">Sil</button>`;
+                            return `<a href='/Admin/Category/Edit/${row.categoryId}' class='btn btn-primary btn-sm'>Düzenle</a>
+                                    <button class="btn btn-danger btn-sm delete-btn" data-id="${row.categoryId}">Sil</button>`;
                         }
                     }
                 ],
