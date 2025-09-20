@@ -1,0 +1,45 @@
+﻿@using CafeMenuProject.WebUI.Helpers
+
+<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
+    <li class="nav-item">
+        <a href="@Url.Action("Dashboard", "Home", new { area = "Admin" })"
+           class="nav-link @(Html.IsActive("Home", "Dashboard", "Admin"))">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>Dashboard</p>
+        </a>
+    </li>
+
+    <li class="nav-item @(Html.IsMenuOpen(new[] { "Category", "Product" }, "Admin"))">
+        <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-book"></i>
+            <p>
+                Katalog
+                <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="@Url.Action("List", "Category", new { area = "Admin" })"
+                   class="nav-link @(Html.IsActive("Category", "List", "Admin"))">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Kategoriler</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="@Url.Action("List", "Product", new { area = "Admin" })"
+                   class="nav-link @(Html.IsActive("Product", "List", "Admin"))">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Ürünler</p>
+                </a>
+            </li>
+        </ul>
+    </li>
+
+    <li class="nav-item">
+        <a href="@Url.Action("List", "User", new { area = "Admin" })"
+           class="nav-link @(Html.IsActive("User", "List", "Admin"))">
+            <i class="nav-icon far fa-user"></i>
+            <p>Kullanıcılar</p>
+        </a>
+    </li>
+</ul>

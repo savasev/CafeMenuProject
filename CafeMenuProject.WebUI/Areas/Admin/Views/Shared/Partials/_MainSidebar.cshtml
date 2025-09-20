@@ -1,6 +1,6 @@
 ﻿<aside class="main-sidebar sidebar-dark-primary elevation-4">
     <a href="index3.html" class="brand-link">
-        <img src="~/Content/adminlte/dist/img/logo.png" alt="AdminLTE Logo" class="brand-image elevation-3" style="opacity: .8">
+        <img src="~/Content/adminlte/dist/img/logo.png" alt="Cafe Menu App Logo" class="brand-image elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">Cafe Menu App</span>
     </a>
 
@@ -15,7 +15,9 @@
         </div>
 
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            @Html.Partial("Partials/_NavSidebar")
+
+            @*<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
                     <a href="@Url.Action("Dashboard", "Home", new { area = "Admin" })" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -52,7 +54,7 @@
                         <p>Kullanıcılar</p>
                     </a>
                 </li>
-            </ul>
+            </ul>*@
         </nav>
     </div>
 </aside>
