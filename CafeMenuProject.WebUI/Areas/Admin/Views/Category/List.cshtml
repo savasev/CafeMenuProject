@@ -1,4 +1,7 @@
-﻿@{
+﻿@using CafeMenuProject.WebUI.Areas.Admin.Models.Categories
+@model CategorySearchModel
+
+@{
     ViewBag.Title = "Kategoriler";
 }
 
@@ -55,6 +58,7 @@
                 lengthChange: false,
                 autoWidth: false,
                 searching: false,
+                pageLength: @Model.PageSize,
                 ajax: {
                     url: '@Url.Action("CategoryList", "Category")',
                     type: 'POST',
@@ -63,7 +67,6 @@
                             Draw: d.draw,
                             PageIndex: Math.floor(d.start / d.length),
                             PageSize: d.length,
-                            //SearchValue: d.search.value
                         };
                     }
                 },

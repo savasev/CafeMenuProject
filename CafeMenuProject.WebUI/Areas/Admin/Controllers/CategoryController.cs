@@ -79,7 +79,7 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
 
         public ActionResult List()
         {
-            return View();
+            return View(new CategorySearchModel { PageSize = 15 });
         }
 
         [HttpPost]
