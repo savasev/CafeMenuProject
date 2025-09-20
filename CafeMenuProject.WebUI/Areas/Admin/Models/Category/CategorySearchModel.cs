@@ -1,4 +1,4 @@
-﻿namespace CafeMenuProject.WebUI.Areas.Admin.Models.Categories
+﻿namespace CafeMenuProject.WebUI.Areas.Admin.Models.Category
 {
     /// <summary>
     /// Category search model

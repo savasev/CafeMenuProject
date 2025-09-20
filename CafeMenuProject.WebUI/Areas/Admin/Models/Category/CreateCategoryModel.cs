@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 
-namespace CafeMenuProject.WebUI.Areas.Admin.Models.Categories
+namespace CafeMenuProject.WebUI.Areas.Admin.Models.Category
 {
     /// <summary>
-    /// Edit category model
+    /// Create category model
     /// </summary>
-    public class EditCategoryModel
+    public class CreateCategoryModel
     {
-        #region Ctor
+        #region Constructor
 
-        public EditCategoryModel()
+        public CreateCategoryModel()
         {
             AvailableParentCategories = new List<SelectListItem>();
         }
@@ -18,8 +18,6 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Models.Categories
         #endregion
 
         #region Properties
-
-        public int CategoryId { get; set; }
 
         public string CategoryName { get; set; }
 

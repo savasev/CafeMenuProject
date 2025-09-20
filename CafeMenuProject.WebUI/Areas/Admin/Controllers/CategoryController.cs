@@ -1,7 +1,7 @@
 ﻿using CafeMenuProject.Business.Abstract;
 using CafeMenuProject.Core.Entities;
 using CafeMenuProject.WebUI.Areas.Admin.Models;
-using CafeMenuProject.WebUI.Areas.Admin.Models.Categories;
+using CafeMenuProject.WebUI.Areas.Admin.Models.Category;
 using CafeMenuProject.WebUI.Infrastructure;
 using System;
 using System.Linq;
