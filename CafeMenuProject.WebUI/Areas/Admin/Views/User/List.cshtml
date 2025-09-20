@@ -2,13 +2,16 @@
     ViewBag.Title = "Kullanıcılar";
 }
 
-<div class="content-header">
+<div class="content-header clearfix">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">@ViewBag.Title</h1>
+                <h1 class="float-left">@ViewBag.Title</h1>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-6 text-right">
+                <a href="@Url.Action("Create", "User", new { area = "Admin" })" class="btn btn-primary">
+                    <i class="fas fa-square-plus"></i> Yeni Kullanıcı
+                </a>
             </div>
         </div>
     </div>
