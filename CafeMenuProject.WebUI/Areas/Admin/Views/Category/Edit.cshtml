@@ -2,13 +2,16 @@
     ViewBag.Title = "Kategori Düzenle";
 }
 
-<div class="content-header">
+<div class="content-header clearfix">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
                 <h1 class="m-0">@ViewBag.Title</h1>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-6 text-right">
+                <a href="@Url.Action("List", "Category", new { area = "Admin" })" class="btn btn-primary">
+                    <i class="fas fa-square-plus"></i> Tüm Kategoriler
+                </a>
             </div>
         </div>
     </div>
