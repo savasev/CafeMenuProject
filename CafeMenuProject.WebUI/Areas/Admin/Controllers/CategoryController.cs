@@ -1,9 +1,11 @@
 ﻿using CafeMenuProject.Business.Abstract;
 using CafeMenuProject.Core.Entities;
 using CafeMenuProject.WebUI.Areas.Admin.Models.Categories;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 
 namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
 {
@@ -30,6 +32,30 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
         {
             if (model == null)
                 model = new CreateCategoryModel();
+
+            model.AvailableParentCategories = (await _categoryService.GetAllCategoriesAsync()).Select(x => new SelectListItem
+            {
+                Value = x.CategoryId.ToString(),
+                Text = x.CategoryName,
+            }).ToList();
+
+            return model;
+        }
+
+        private async Task<EditCategoryModel> PrepareEditCategoryModelAsync(Category category, EditCategoryModel model = null)
+        {
+            if (category == null)
+                throw new ArgumentNullException(nameof(category));
+
+            if (model == null)
+            {
+                model = new EditCategoryModel
+                {
+                    CategoryId = category.CategoryId,
+                    CategoryName = category.CategoryName,
+                    ParentCategoryId = category.ParentCategoryId,
+                };
+            }
 
             model.AvailableParentCategories = (await _categoryService.GetAllCategoriesAsync()).Select(x => new SelectListItem
             {
@@ -94,9 +120,38 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
 
         #region Edit
 
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
+            var category = await _categoryService.GetCategoryByIdAsync(id);
+            if (category == null || category.IsDeleted)
+                return RedirectToAction("List");
+
+            var model = await PrepareEditCategoryModelAsync(category);
+
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(EditCategoryModel model)
+        {
+            var category = await _categoryService.GetCategoryByIdAsync(model.CategoryId);
+            if (category == null || category.IsDeleted)
+                throw new ArgumentNullException(nameof(category));
+
+            if (ModelState.IsValid)
+            {
+                category.CategoryName = model.CategoryName;
+                category.ParentCategoryId = model.ParentCategoryId;
+
+                await _categoryService.UpdateCategoryAsync(category);
+
+                return RedirectToAction("List");
+            }
+
+            model = await PrepareEditCategoryModelAsync(category, model);
+
+            return View(model);
         }
 
         #endregion

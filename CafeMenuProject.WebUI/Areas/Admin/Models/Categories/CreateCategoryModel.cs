@@ -3,6 +3,9 @@ using System.Web.Mvc;
 
 namespace CafeMenuProject.WebUI.Areas.Admin.Models.Categories
 {
+    /// <summary>
+    /// Create category model
+    /// </summary>
     public class CreateCategoryModel
     {
         #region Ctor

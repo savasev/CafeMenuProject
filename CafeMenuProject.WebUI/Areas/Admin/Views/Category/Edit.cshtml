@@ -1,4 +1,7 @@
-﻿@{
+﻿@model EditCategoryModel
+@using CafeMenuProject.WebUI.Areas.Admin.Models.Categories
+
+@{
     ViewBag.Title = "Kategori Düzenle";
 }
 
@@ -19,6 +22,40 @@
 
 <section class="content">
     <div class="container-fluid">
+        <div class="card card-danger card-outline">
+            <div class="card-header with-border clearfix">
+                <h3 class="card-title">@ViewBag.PageTitle</h3>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("Edit", "Category", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
 
+                    @Html.HiddenFor(x => x.CategoryId)
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.CategoryName, "Kategori Adı", htmlAttributes: new { @class = "form-label" })
+                        @Html.TextBoxFor(x => x.CategoryName, new { @class = "form-control", placeholder = "Kategori adı" })
+                        @Html.ValidationMessageFor(x => x.CategoryName, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ParentCategoryId, "Üst Kategori", new { @class = "form-label" })
+                        @Html.DropDownListFor(
+                            x => x.ParentCategoryId,
+                            new SelectList(Model.AvailableParentCategories, "Value", "Text"),
+                            "Seçiniz...",
+                            new { @class = "form-control" }
+                        )
+                        @Html.ValidationMessageFor(x => x.ParentCategoryId, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <button type="submit" class="btn btn-primary">Kaydet</button>
+                        <a href="@Url.Action("Index", "Category")" class="btn btn-secondary">Vazgeç</a>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
 </section>
