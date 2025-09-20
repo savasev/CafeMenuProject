@@ -66,6 +66,28 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
             return model;
         }
 
+        //private async Task<DataTableResult> PrepareCategoryDataTableResultAsync(CategorySearchModel searchModel)
+        //{
+        //    var pagedCategories = await _categoryService.GetAllCategoriesAsync(categoryName: searchModel.CategoryName,
+        //        pageIndex: searchModel.PageIndex,
+        //        pageSize: searchModel.PageSize);
+
+        //    var result = new DataTableResult
+        //    {
+        //        Draw = searchModel.Draw,
+        //        RecordsTotal = pagedCategories.TotalCount,
+        //        RecordsFiltered = pagedCategories.TotalCount,
+        //        Data = pagedCategories.Select(x => new CategoryViewModel
+        //        {
+        //            CategoryId = x.CategoryId,
+        //            CategoryName = x.CategoryName,
+        //            CreatedDate = x.CreatedDate.ToString("g"),
+        //        }).ToList()
+        //    };
+
+        //    return result;
+        //}
+
         #endregion
 
         #region Methods
@@ -87,6 +109,8 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
         {
             if (searchModel == null)
                 throw new ArgumentNullException(nameof(searchModel));
+
+            //var dataTableResult = await PrepareCategoryDataTableResultAsync(searchModel);
 
             var pagedCategories = await _categoryService.GetAllCategoriesAsync(categoryName: searchModel.CategoryName,
                 pageIndex: searchModel.PageIndex,

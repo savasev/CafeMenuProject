@@ -153,8 +153,10 @@
     <Compile Include="Areas\Admin\Controllers\UserController.cs" />
     <Compile Include="Areas\Admin\Models\BaseSearchModel.cs" />
     <Compile Include="Areas\Admin\Models\Categories\CategorySearchModel.cs" />
+    <Compile Include="Areas\Admin\Models\Categories\CategoryViewModel.cs" />
     <Compile Include="Areas\Admin\Models\Categories\CreateCategoryModel.cs" />
     <Compile Include="Areas\Admin\Models\Categories\EditCategoryModel.cs" />
+    <Compile Include="Areas\Admin\Models\DataTableResult.cs" />
     <Compile Include="Areas\Admin\Models\Products\CreateProductModel.cs" />
     <Compile Include="Areas\Admin\Models\Products\EditProductModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
