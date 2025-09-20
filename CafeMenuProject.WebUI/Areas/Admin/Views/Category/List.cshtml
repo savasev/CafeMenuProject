@@ -32,9 +32,10 @@
                         <table id="categories-datatable" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th class="text-center">#</th>
+                                    <th>#</th>
                                     <th>Kategori Adı</th>
-                                    <th class="text-center">İşlem</th>
+                                    <th>Oluşturma Tarihi</th>
+                                    <th>İşlem</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -80,7 +81,8 @@
                         data: 'categoryName'
                     },
                     {
-                        data: 'createdDate'
+                        data: 'createdDate',
+                        width: '15%',
                     },
                     {
                         data: null,
