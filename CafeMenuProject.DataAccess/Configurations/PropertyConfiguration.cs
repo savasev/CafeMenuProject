@@ -12,7 +12,13 @@ namespace CafeMenuProject.DataAccess.Configurations
 
         public PropertyConfiguration()
         {
-            HasKey(c => c.PropertyId);
+            HasKey(x => x.PropertyId);
+
+            Property(x => x.Key)
+                .IsRequired();
+
+            Property(x => x.Value)
+                .IsRequired();
         }
 
         #endregion

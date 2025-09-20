@@ -12,19 +12,19 @@ namespace CafeMenuProject.DataAccess.Configurations
 
         public CategoryConfiguration()
         {
-            HasKey(c => c.CategoryId);
+            HasKey(x => x.CategoryId);
 
-            Property(c => c.CategoryName)
+            Property(x => x.CategoryName)
                 .IsRequired()
                 .HasMaxLength(100);
 
-            Property(c => c.IsDeleted)
+            Property(x => x.IsDeleted)
                 .HasColumnAnnotation("DefaultValue", false);
 
-            Property(c => c.IsDeleted)
+            Property(x => x.IsDeleted)
                 .IsRequired();
 
-            Property(c => c.CreatedDate)
+            Property(x => x.CreatedDate)
                 .IsRequired();
         }
 

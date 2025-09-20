@@ -11,6 +11,8 @@
 
         public string Surname { get; set; }
 
+        public string Username { get; set; }
+
         public string HashPassword { get; set; }
 
         public string SaltPassword { get; set; }
