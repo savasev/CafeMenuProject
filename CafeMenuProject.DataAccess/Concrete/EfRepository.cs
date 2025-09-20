@@ -33,11 +33,6 @@ namespace CafeMenuProject.DataAccess.Concrete
 
         #region Methods
 
-        public IQueryable<TEntity> Query()
-        {
-            return _context.Set<TEntity>().AsNoTracking();            
-        }
-
         public async Task DeleteAsync(TEntity entity)
         {
             if (entity == null)
@@ -58,7 +53,7 @@ namespace CafeMenuProject.DataAccess.Concrete
 
         public async Task<IList<TEntity>> GetAllAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> func = null)
         {
-            var query = Query();
+            var query = Table;
             if (func != null)
                 query = func(query);
 
@@ -70,7 +65,7 @@ namespace CafeMenuProject.DataAccess.Concrete
             int pageSize = int.MaxValue,
             bool getOnlyTotalCount = false)
         {
-            var query = Query();
+            var query = Table;
 
             if (func != null)
             {
@@ -115,6 +110,12 @@ namespace CafeMenuProject.DataAccess.Concrete
 
             await _context.SaveChangesAsync();
         }
+
+        #endregion
+
+        #region Properties
+
+        public IQueryable<TEntity> Table => _context.Set<TEntity>().AsNoTracking();
 
         #endregion
     }

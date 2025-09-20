@@ -12,6 +12,8 @@ namespace CafeMenuProject.DataAccess.Abstract
     /// <typeparam name="TEntity">Entity type</typeparam>
     public interface IRepository<TEntity> where TEntity : class
     {
+        #region Methods
+
         Task<IList<TEntity>> GetAllAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> func = null);
 
         Task<IPagedList<TEntity>> GetAllPagedAsync(Func<IQueryable<TEntity>, Task<IQueryable<TEntity>>> func = null,
@@ -26,5 +28,16 @@ namespace CafeMenuProject.DataAccess.Abstract
         Task UpdateAsync(TEntity entity);
 
         Task DeleteAsync(TEntity entity);
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets a table
+        /// </summary>
+        IQueryable<TEntity> Table { get; }
+
+        #endregion
     }
 }
