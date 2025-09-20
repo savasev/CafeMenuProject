@@ -1,4 +1,5 @@
 ﻿using CafeMenuProject.Business.Abstract;
+using CafeMenuProject.Core;
 using CafeMenuProject.Core.Entities;
 using CafeMenuProject.DataAccess.Abstract;
 using System;
@@ -41,6 +42,22 @@ namespace CafeMenuProject.Business.Concrete
             {
                 return query.Where(x => !x.IsDeleted);
             });
+        }
+
+        public async Task<IPagedList<Category>> GetAllCategoriesAsync(string categoryName,
+            int pageIndex = 0,
+            int pageSize = int.MaxValue)
+        {
+            return await _categoryRepository.GetAllPagedAsync(query =>
+            {
+                if (!string.IsNullOrWhiteSpace(categoryName))
+                    query = query.Where(c => c.CategoryName.Contains(categoryName));
+                
+                query = query.Where(x => !x.IsDeleted);
+
+                return (Task<IQueryable<Category>>)query.OrderBy(c => c.CategoryId);
+
+            }, pageIndex, pageSize);
         }
 
         public async Task<Category> GetCategoryByIdAsync(int id)

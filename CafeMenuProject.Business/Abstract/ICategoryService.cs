@@ -1,4 +1,5 @@
-﻿using CafeMenuProject.Core.Entities;
+﻿using CafeMenuProject.Core;
+using CafeMenuProject.Core.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,6 +11,10 @@ namespace CafeMenuProject.Business.Abstract
     public interface ICategoryService
     {
         Task<IList<Category>> GetAllCategoriesAsync();
+
+        Task<IPagedList<Category>> GetAllCategoriesAsync(string categoryName,
+            int pageIndex = 0,
+            int pageSize = int.MaxValue);
 
         Task<Category> GetCategoryByIdAsync(int id);
         
