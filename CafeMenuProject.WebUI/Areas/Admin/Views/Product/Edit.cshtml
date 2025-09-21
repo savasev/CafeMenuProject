@@ -1,7 +1,7 @@
 ﻿@model EditProductModel
 
 @{
-    ViewBag.Title = "Yeni Ürün";
+    ViewBag.Title = "Ürün Düzenle";
 }
 
 <div class="content-header clearfix">
@@ -28,7 +28,7 @@
                 </h3>
             </div>
             <div class="card-body">
-                @using (Html.BeginForm("Create", "Product", FormMethod.Post))
+                @using (Html.BeginForm("Edit", "Product", FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
 
@@ -42,8 +42,8 @@
                         @Html.LabelFor(x => x.CategoryId, "Kategori", new { @class = "form-label" })
                         @Html.DropDownListFor(
                             x => x.CategoryId,
-                            new SelectList(Model.AvailableCategories, "Value", "Text"),
-                            "Seçiniz...",
+                            new SelectList(Model.AvailableCategories, "Value", "Text", Model.CategoryId),
+                            "Kategori seçiniz...",
                             new { @class = "form-control" }
                         )
                         @Html.ValidationMessageFor(x => x.CategoryId, "", new { @class = "text-danger" })
