@@ -229,17 +229,17 @@
                     data: postData,
                     success: function (response) {
                         if (response.success) {
-                            $('#modal-create-product-property').modal('hide');
+                            $('#modal-edit-product-property').modal('hide');
 
                             table.ajax.reload();
 
                             $(document).Toasts('create', {
                                 class: 'bg-success',
                                 title: 'Başarılı',
-                                body: 'Özellik başarıyla eklendi.'
+                                body: 'Özellik başarıyla güncellendi.'
                             });
                         } else {
-                            var message = response.message || 'Özellik ekleme işlemi başarısız oldu.';
+                            var message = response.message || 'Özellik güncelleme işlemi başarısız oldu.';
                             $(document).Toasts('create', {
                                 class: 'bg-danger',
                                 title: 'Hata',
