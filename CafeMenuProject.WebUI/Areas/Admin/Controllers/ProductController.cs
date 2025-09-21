@@ -470,6 +470,10 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
 
             await _productPropertyService.DeleteProductPropertyAsync(productProperty);
 
+            var property = await _propertyService.GetPropertyByIdAsync(productProperty.PropertyId);
+            if (property != null)
+                await _propertyService.DeletePropertyAsync(property);
+
             return Json(new { success = true });
         }
 
