@@ -23,7 +23,7 @@
     <div class="container-fluid">
         @Html.Partial("_EditProductCard", Model)
 
-        @Html.Partial("_EditProductPropertyCard", Model)
+        @Html.Partial("_EditPropertyCard", Model)
     </div>
 </section>
 
@@ -138,7 +138,7 @@
                 var id = $(this).data('id');
 
                 $.ajax({
-                    url: '/Admin/Product/ProductProperty/' + id,
+                    url: '/Admin/Product/EditProductProperty/' + id,
                     type: 'GET',
                     success: function (res) {
                         if (res.success) {
@@ -178,8 +178,8 @@
                     type: 'POST',
                     data: {
                         ProductId: '@Model.ProductId',
-                        Key: $('#@Html.IdFor(x => x.CreateProductPropertyModel.Key)').val(),
-                        Value: $('#@Html.IdFor(x => x.CreateProductPropertyModel.Value)').val()
+                        Key: $('#@Html.IdFor(x => x.CreatePropertyModel.Key)').val(),
+                        Value: $('#@Html.IdFor(x => x.CreatePropertyModel.Value)').val()
                     },
                     success: function (response) {
                         if (response.success) {
@@ -219,8 +219,8 @@
 
                 var postData = {
                     ProductPropertyId: $('#modal-edit-product-property').find('input[name="ProductPropertyId"]').val(),
-                    Key: $('#modal-edit-product-property').find('input[name="Key"]').val(''),
-                    Value: $('#modal-edit-product-property').find('input[name="Value"]').val(''),
+                    Key: $('#modal-edit-product-property').find('input[name="Key"]').val(),
+                    Value: $('#modal-edit-product-property').find('input[name="Value"]').val(),
                 };
 
                 $.ajax({
@@ -258,8 +258,8 @@
             });
 
             $('#modal-create-product-property').on('hide.bs.modal', function () {
-                $('#@Html.IdFor(x => x.CreateProductPropertyModel.Key)').val('');
-                $('#@Html.IdFor(x => x.CreateProductPropertyModel.Value)').val('');
+                $('#@Html.IdFor(x => x.CreatePropertyModel.Key)').val('');
+                $('#@Html.IdFor(x => x.CreatePropertyModel.Value)').val('');
             });
 
             $('#modal-edit-product-property').on('hide.bs.modal', function () {

@@ -11,15 +11,13 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    @Html.LabelFor(x => x.CreateProductPropertyModel.Key, "Özellik Adı (Key)", htmlAttributes: new { @class = "form-label" })
-                    @Html.TextBoxFor(x => x.CreateProductPropertyModel.Key, new { @class = "form-control", placeholder = "Key" })
-                    @Html.ValidationMessageFor(x => x.CreateProductPropertyModel.Key, "", new { @class = "text-danger" })
+                    @Html.LabelFor(x => x.CreatePropertyModel.Key, "Özellik Adı (Key)", htmlAttributes: new { @class = "form-label" })
+                    @Html.TextBoxFor(x => x.CreatePropertyModel.Key, new { @class = "form-control", placeholder = "Key" })                    
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(x => x.CreateProductPropertyModel.Value, "Özellik Değeri (Value)", htmlAttributes: new { @class = "form-label" })
-                    @Html.TextBoxFor(x => x.CreateProductPropertyModel.Value, new { @class = "form-control", placeholder = "Value" })
-                    @Html.ValidationMessageFor(x => x.CreateProductPropertyModel.Value, "", new { @class = "text-danger" })
+                    @Html.LabelFor(x => x.CreatePropertyModel.Value, "Özellik Değeri (Value)", htmlAttributes: new { @class = "form-label" })
+                    @Html.TextBoxFor(x => x.CreatePropertyModel.Value, new { @class = "form-control", placeholder = "Value" })
                 </div>
             </div>
             <div class="modal-footer">

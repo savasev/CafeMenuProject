@@ -142,19 +142,16 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
             return result;
         }
 
-        private EditProductPropertyModel PrepareEditProductPropertyModel(EditProductPropertyModel model, ProductProperty productProperty, Property property)
+        private EditPropertyModel PrepareEditPropertyModel(EditPropertyModel model, Property property)
         {
-            if (productProperty == null)
-                throw new ArgumentNullException(nameof(productProperty));
-
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
 
             if (model == null)
             {
-                model = new EditProductPropertyModel
+                model = new EditPropertyModel
                 {
-                    ProductPropertyId = productProperty.ProductPropertyId,
+                    PropertyId = property.PropertyId,
                     Key = property.Key,
                     Value = property.Value,
                 };
@@ -299,22 +296,6 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
 
         #region Product property methods
 
-        public async Task<ActionResult> ProductProperty(int id)
-        {
-            var productProperty = await _productPropertyService.GetProductPropertyByIdAsync(id);
-            if (productProperty == null)
-                return Json(new { success = false, message = "Ürün özellik bulunamadı" }, JsonRequestBehavior.AllowGet);
-
-            var property = await _propertyService.GetPropertyByIdAsync(id);
-            if (property == null)
-                return Json(new { success = false, message = "Ürün özellik bulunamadı" }, JsonRequestBehavior.AllowGet);
-
-            var model = PrepareEditProductPropertyModel(null, productProperty, property);
-            var html = RenderPartialViewToString("_EditProductProperty", model);
-
-            return Json(new { success = true, html = html }, JsonRequestBehavior.AllowGet);
-        }
-
         [HttpPost]
         public async Task<ActionResult> ProductPropertyList(ProductPropertySearchModel searchModel)
         {
@@ -327,7 +308,7 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateProductProperty(CreateProductPropertyModel model)
+        public async Task<ActionResult> CreateProperty(CreatePropertyModel model)
         {
             var product = await _productService.GetProductByIdAsync(model.ProductId);
             if (product == null || product.IsDeleted)
@@ -350,6 +331,40 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
                 };
 
                 await _productPropertyService.InsertProductPropertyAsync(productProperty);
+
+                return Json(new { success = true });
+            }
+
+            var errors = string.Join("<br/>", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
+
+            return Json(new { success = false, message = errors });
+        }
+
+        public async Task<ActionResult> EditProperty(int id)
+        {
+            var property = await _propertyService.GetPropertyByIdAsync(id);
+            if (property == null)
+                return Json(new { success = false, message = "Ürün özellik bulunamadı" }, JsonRequestBehavior.AllowGet);
+
+            var model = PrepareEditPropertyModel(null, property);
+            var html = RenderPartialViewToString("_EditProperty", model);
+
+            return Json(new { success = true, html }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> EditProperty(EditPropertyModel model)
+        {
+            var property = await _propertyService.GetPropertyByIdAsync(model.PropertyId);
+            if (property == null)
+                return Json(new { success = false, message = "Ürün özellik bulunamadı" }, JsonRequestBehavior.AllowGet);
+
+            if (ModelState.IsValid)
+            {
+                property.Key = model.Key;
+                property.Value = model.Value;
+
+                await _propertyService.UpdatePropertyAsync(property);
 
                 return Json(new { success = true });
             }

@@ -1,13 +1,13 @@
 ﻿namespace CafeMenuProject.WebUI.Areas.Admin.Models.Product
 {
     /// <summary>
-    /// Edit product property model
+    /// Create property model
     /// </summary>
-    public class EditProductPropertyModel
+    public class CreatePropertyModel
     {
         #region Properties
 
-        public int ProductPropertyId { get; set; }
+        public int ProductId { get; set; }
 
         public string Key { get; set; }
 
