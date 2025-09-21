@@ -211,9 +211,61 @@
                 });
             });
 
+            $('#editProductPropertyModalSaveBtn').on('click', function () {
+                var btn = $(this);
+
+                btn.prop('disabled', true);
+                btn.text('Kaydediliyor...');
+
+                var postData = {
+                    ProductPropertyId: $('#modal-edit-product-property').find('input[name="ProductPropertyId"]').val(),
+                    Key: $('#modal-edit-product-property').find('input[name="Key"]').val(''),
+                    Value: $('#modal-edit-product-property').find('input[name="Value"]').val(''),
+                };
+
+                $.ajax({
+                    url: '@Url.Action("EditProductProperty", "Product")',
+                    type: 'POST',
+                    data: postData,
+                    success: function (response) {
+                        if (response.success) {
+                            $('#modal-create-product-property').modal('hide');
+
+                            table.ajax.reload();
+
+                            $(document).Toasts('create', {
+                                class: 'bg-success',
+                                title: 'Başarılı',
+                                body: 'Özellik başarıyla eklendi.'
+                            });
+                        } else {
+                            var message = response.message || 'Özellik ekleme işlemi başarısız oldu.';
+                            $(document).Toasts('create', {
+                                class: 'bg-danger',
+                                title: 'Hata',
+                                body: message,
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error);
+                    },
+                    complete: function () {
+                        btn.prop('disabled', false);
+                        btn.text('Kaydet');
+                    }
+                });
+            });
+
             $('#modal-create-product-property').on('hide.bs.modal', function () {
                 $('#@Html.IdFor(x => x.CreateProductPropertyModel.Key)').val('');
                 $('#@Html.IdFor(x => x.CreateProductPropertyModel.Value)').val('');
+            });
+
+            $('#modal-edit-product-property').on('hide.bs.modal', function () {
+                $('#modal-edit-product-property').find('input[name="ProductPropertyId"]').val(0);
+                $('#modal-edit-product-property').find('input[name="Key"]').val('');
+                $('#modal-edit-product-property').find('input[name="Value"]').val('');
             });
         });
     </script>
