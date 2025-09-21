@@ -2280,7 +2280,7 @@
     <Content Include="Areas\Admin\Views\Product\_EditProductCard.cshtml" />
     <Content Include="Areas\Admin\Views\Product\_CreateProductCard.cshtml" />
     <Content Include="Areas\Admin\Views\Product\_EditPropertyCard.cshtml" />
-    <Content Include="Areas\Admin\Views\Product\_CreateProductPropertyModal.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\_CreatePropertyModal.cshtml" />
     <Content Include="Areas\Admin\Views\Product\_EditPropertyModal.cshtml" />
     <Content Include="Areas\Admin\Views\Product\_EditProperty.cshtml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
