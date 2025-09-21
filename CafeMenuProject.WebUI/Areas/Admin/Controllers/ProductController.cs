@@ -322,6 +322,18 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
             return Json(new { success = false, message = errors });
         }
 
+        [HttpPost]
+        public async Task<ActionResult> DeleteProductProperty(int id)
+        {
+            var productProperty = await _productPropertyService.GetProductPropertyByIdAsync(id);
+            if (productProperty == null)
+                return Json(new { success = false, message = "Ürün özellik bulunamadı" });
+
+            await _productPropertyService.DeleteProductPropertyAsync(productProperty);
+
+            return Json(new { success = true });
+        }
+
         #endregion
 
         #endregion
