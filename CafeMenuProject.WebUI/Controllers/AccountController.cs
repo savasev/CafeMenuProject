@@ -1,7 +1,9 @@
 ﻿using CafeMenuProject.Business.Abstract;
 using CafeMenuProject.Core.Entities;
+using CafeMenuProject.WebUI.Areas.Admin.Validators.User;
 using CafeMenuProject.WebUI.Helpers;
 using CafeMenuProject.WebUI.Models;
+using CafeMenuProject.WebUI.Validators;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -81,8 +83,22 @@ namespace CafeMenuProject.WebUI.Controllers
         [HttpPost]
         public async Task<ActionResult> Register(UserRegisterModel model)
         {
-            if (!ModelState.IsValid)
+            #region Validation
+
+            var validator = new UserRegisterValidator();
+            var validationResult = validator.Validate(model);
+
+            if (!validationResult.IsValid)
+            {
+                foreach (var error in validationResult.Errors)
+                {
+                    ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                }
+
                 return View(model);
+            }
+
+            #endregion
 
             var user = new User
             {
