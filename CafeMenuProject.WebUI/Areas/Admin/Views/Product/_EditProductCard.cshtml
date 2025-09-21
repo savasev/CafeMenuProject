@@ -25,7 +25,6 @@
                         @Html.DropDownListFor(
                             x => x.CategoryId,
                             new SelectList(Model.AvailableCategories, "Value", "Text", Model.CategoryId),
-                            "Kategori seçiniz...",
                             new { @class = "form-control" }
                         )
                         @Html.ValidationMessageFor(x => x.CategoryId, "", new { @class = "text-danger" })

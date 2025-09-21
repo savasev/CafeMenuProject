@@ -5,6 +5,7 @@ using CafeMenuProject.WebUI.Areas.Admin.Models.Product;
 using CafeMenuProject.WebUI.Areas.Admin.Validators;
 using CafeMenuProject.WebUI.Filters;
 using CafeMenuProject.WebUI.Infrastructure;
+using FluentValidation;
 using System;
 using System.IO;
 using System.Linq;
@@ -52,6 +53,8 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
                 Value = x.CategoryId.ToString()
             }).ToList();
 
+            searchModel.AvailableCategories.Insert(0, new SelectListItem { Text = "Kategori Seçiniz", Value = "0" });
+
             return searchModel;
         }
 
@@ -92,6 +95,8 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
                 Text = x.CategoryName,
             }).ToList();
 
+            model.AvailableCategories.Insert(0, new SelectListItem { Text = "Kategori Seçiniz", Value = "0" });
+
             return model;
         }
 
@@ -116,6 +121,8 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
                 Value = x.CategoryId.ToString(),
                 Text = x.CategoryName,
             }).ToList();
+
+            model.AvailableCategories.Insert(0, new SelectListItem { Text = "Kategori Seçiniz", Value = "0" });
 
             return model;
         }
@@ -209,7 +216,7 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
         {
             #region Validation
 
-            var validator = new ProductValidator();
+            var validator = new CreateProductValidator();
             var validationResult = validator.Validate(model);
 
             if (!validationResult.IsValid)
@@ -225,47 +232,40 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
 
             #endregion
 
-            if (ModelState.IsValid)
+            string filePath = null;
+
+            if (model.ImageFile != null && model.ImageFile.ContentLength > 0)
             {
-                string filePath = null;
+                var fileName = Path.GetFileName(model.ImageFile.FileName);
+                var uploadDirectory = Server.MapPath("~/Uploads/Products");
 
-                if (model.ImageFile != null && model.ImageFile.ContentLength > 0)
+                if (!Directory.Exists(uploadDirectory))
                 {
-                    var fileName = Path.GetFileName(model.ImageFile.FileName);
-                    var uploadDirectory = Server.MapPath("~/Uploads/Products");
-
-                    if (!Directory.Exists(uploadDirectory))
-                    {
-                        Directory.CreateDirectory(uploadDirectory);
-                    }
-
-                    var fullPath = Path.Combine(uploadDirectory, fileName);
-                    model.ImageFile.SaveAs(fullPath);
-
-                    filePath = "/Uploads/Products/" + fileName;
+                    Directory.CreateDirectory(uploadDirectory);
                 }
 
-                var product = new Product
-                {
-                    ProductName = model.ProductName,
-                    CategoryId = model.CategoryId,
-                    Price = model.Price,
-                    ImagePath = filePath,
-                    CreatorUserId = 1,
-                    CreatedDate = DateTime.Now,
-                };
+                var fullPath = Path.Combine(uploadDirectory, fileName);
+                model.ImageFile.SaveAs(fullPath);
 
-                await _productService.InsertProductAsync(product);
-
-                if (!continueEditing)
-                    return RedirectToAction("List");
-
-                return RedirectToAction("Edit", new { id = product.ProductId });
+                filePath = "/Uploads/Products/" + fileName;
             }
 
-            model = await PrepareCreateProductModelAsync(model);
+            var product = new Product
+            {
+                ProductName = model.ProductName,
+                CategoryId = model.CategoryId,
+                Price = model.Price,
+                ImagePath = filePath,
+                CreatorUserId = 1,
+                CreatedDate = DateTime.Now,
+            };
 
-            return View(model);
+            await _productService.InsertProductAsync(product);
+
+            if (!continueEditing)
+                return RedirectToAction("List");
+
+            return RedirectToAction("Edit", new { id = product.ProductId });
         }
 
         #endregion
@@ -291,55 +291,66 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
             if (product == null || product.IsDeleted)
                 return RedirectToAction("List");
 
-            if (ModelState.IsValid)
+            #region Validation
+
+            var validator = new EditProductValidator();
+            var validationResult = validator.Validate(model);
+
+            if (!validationResult.IsValid)
             {
-                string filePath = null;
-
-                if (model.ImageFile != null && model.ImageFile.ContentLength > 0)
+                foreach (var error in validationResult.Errors)
                 {
-                    var fileName = Path.GetFileName(model.ImageFile.FileName);
-                    var uploadDirectory = Server.MapPath("~/Uploads/Products");
-
-                    if (!Directory.Exists(uploadDirectory))
-                    {
-                        Directory.CreateDirectory(uploadDirectory);
-                    }
-
-                    var fullPath = Path.Combine(uploadDirectory, fileName);
-
-                    if (!string.IsNullOrEmpty(product.ImagePath))
-                    {
-                        var oldFileFullPath = Server.MapPath(product.ImagePath);
-                        if (System.IO.File.Exists(oldFileFullPath))
-                        {
-                            System.IO.File.Delete(oldFileFullPath);
-                        }
-                    }
-
-                    model.ImageFile.SaveAs(fullPath);
-                    filePath = "/Uploads/Products/" + fileName;
-                }
-                else
-                {
-                    filePath = product.ImagePath;
+                    ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
                 }
 
-                product.ProductName = model.ProductName;
-                product.CategoryId = model.CategoryId;
-                product.Price = model.Price;
-                product.ImagePath = filePath;
-
-                await _productService.UpdateProductAsync(product);
-
-                if (!continueEditing)
-                    return RedirectToAction("List");
-
-                return RedirectToAction("Edit", new { id = product.ProductId });
+                model = await PrepareEditProductModelAsync(product, model);
+                return View(model);
             }
 
-            model = await PrepareEditProductModelAsync(product, model);
+            #endregion
 
-            return View(model);
+            string filePath = null;
+
+            if (model.ImageFile != null && model.ImageFile.ContentLength > 0)
+            {
+                var fileName = Path.GetFileName(model.ImageFile.FileName);
+                var uploadDirectory = Server.MapPath("~/Uploads/Products");
+
+                if (!Directory.Exists(uploadDirectory))
+                {
+                    Directory.CreateDirectory(uploadDirectory);
+                }
+
+                var fullPath = Path.Combine(uploadDirectory, fileName);
+
+                if (!string.IsNullOrEmpty(product.ImagePath))
+                {
+                    var oldFileFullPath = Server.MapPath(product.ImagePath);
+                    if (System.IO.File.Exists(oldFileFullPath))
+                    {
+                        System.IO.File.Delete(oldFileFullPath);
+                    }
+                }
+
+                model.ImageFile.SaveAs(fullPath);
+                filePath = "/Uploads/Products/" + fileName;
+            }
+            else
+            {
+                filePath = product.ImagePath;
+            }
+
+            product.ProductName = model.ProductName;
+            product.CategoryId = model.CategoryId;
+            product.Price = model.Price;
+            product.ImagePath = filePath;
+
+            await _productService.UpdateProductAsync(product);
+
+            if (!continueEditing)
+                return RedirectToAction("List");
+
+            return RedirectToAction("Edit", new { id = product.ProductId });
         }
 
         #endregion

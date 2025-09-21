@@ -181,7 +181,8 @@
     <Compile Include="Areas\Admin\Models\User\EditUserModel.cs" />
     <Compile Include="Areas\Admin\Models\User\UserSearchModel.cs" />
     <Compile Include="Areas\Admin\Models\User\UserViewModel.cs" />
-    <Compile Include="Areas\Admin\Validators\ProductValidator.cs" />
+    <Compile Include="Areas\Admin\Validators\CreateProductValidator.cs" />
+    <Compile Include="Areas\Admin\Validators\EditProductValidator.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Filters\ParameterBasedOnFormNameAttribute.cs" />
     <Compile Include="Global.asax.cs">
