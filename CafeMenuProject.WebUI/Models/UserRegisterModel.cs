@@ -1,11 +1,15 @@
 ﻿namespace CafeMenuProject.WebUI.Models
 {
     /// <summary>
-    /// User login model
+    /// User register model
     /// </summary>
-    public class LoginViewModel
+    public class UserRegisterModel
     {
         #region Properties
+
+        public string Name { get; set; }
+
+        public string Surname { get; set; }
 
         public string Username { get; set; }
 

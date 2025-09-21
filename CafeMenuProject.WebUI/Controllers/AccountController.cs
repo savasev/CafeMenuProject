@@ -1,4 +1,5 @@
 ﻿using CafeMenuProject.Business.Abstract;
+using CafeMenuProject.Core.Entities;
 using CafeMenuProject.WebUI.Helpers;
 using CafeMenuProject.WebUI.Models;
 using System.Threading.Tasks;
@@ -11,14 +12,17 @@ namespace CafeMenuProject.WebUI.Controllers
         #region Fields
 
         private readonly IAuthenticationService _authenticationService;
+        private readonly IUserService _userService;
 
         #endregion
 
         #region Ctor
 
-        public AccountController(IAuthenticationService authenticationService)
+        public AccountController(IAuthenticationService authenticationService,
+            IUserService userService)
         {
             _authenticationService = authenticationService;
+            _userService = userService;
         }
 
         #endregion
@@ -29,11 +33,11 @@ namespace CafeMenuProject.WebUI.Controllers
 
         public ActionResult Login()
         {
-            return View(new LoginViewModel());
+            return View(new UserLoginModel());
         }
 
         [HttpPost]
-        public async Task<ActionResult> Login(LoginViewModel model)
+        public async Task<ActionResult> Login(UserLoginModel model)
         {
             if (!ModelState.IsValid)
                 return View(model);
@@ -59,6 +63,35 @@ namespace CafeMenuProject.WebUI.Controllers
         public ActionResult Logout()
         {
             AuthHelper.SignOut();
+
+            return RedirectToAction("Login");
+        }
+
+        #endregion
+
+        #region Register
+
+        public ActionResult Register()
+        {
+            AuthHelper.SignOut();
+
+            return View(new UserRegisterModel());
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Register(UserRegisterModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var user = new User
+            {
+                Name = model.Name,
+                Surname = model.Surname,
+                Username = model.Username,
+            };
+
+            await _userService.InsertUserWithSpAsync(user, model.Password);
 
             return RedirectToAction("Login");
         }
