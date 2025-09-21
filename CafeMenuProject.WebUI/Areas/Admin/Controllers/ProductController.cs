@@ -2,6 +2,7 @@
 using CafeMenuProject.Core.Entities;
 using CafeMenuProject.WebUI.Areas.Admin.Models;
 using CafeMenuProject.WebUI.Areas.Admin.Models.Product;
+using CafeMenuProject.WebUI.Areas.Admin.Validators;
 using CafeMenuProject.WebUI.Filters;
 using CafeMenuProject.WebUI.Infrastructure;
 using System;
@@ -206,6 +207,24 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CreateProductModel model, bool continueEditing)
         {
+            #region Validation
+
+            var validator = new ProductValidator();
+            var validationResult = validator.Validate(model);
+
+            if (!validationResult.IsValid)
+            {
+                foreach (var error in validationResult.Errors)
+                {
+                    ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                }
+
+                model = await PrepareCreateProductModelAsync(model);
+                return View(model);
+            }
+
+            #endregion
+
             if (ModelState.IsValid)
             {
                 string filePath = null;
