@@ -4,6 +4,8 @@ using CafeMenuProject.DataAccess.Abstract;
 using System;
 using System.Data.Entity;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace CafeMenuProject.Business.Concrete
@@ -32,13 +34,16 @@ namespace CafeMenuProject.Business.Concrete
 
         private string ComputeHash(string password, string salt)
         {
-            using (var sha = System.Security.Cryptography.SHA512.Create())
+            using (var sha = SHA512.Create())
             {
-                var bytes = System.Text.Encoding.UTF8.GetBytes(password + salt);
-
+                var bytes = Encoding.Unicode.GetBytes(password + salt);
                 var hash = sha.ComputeHash(bytes);
 
-                return BitConverter.ToString(hash).Replace("-", "").ToLower();
+                var sb = new StringBuilder();
+                foreach (var b in hash)
+                    sb.Append(b.ToString("X2"));
+
+                return sb.ToString();
             }
         }
 
@@ -46,18 +51,19 @@ namespace CafeMenuProject.Business.Concrete
 
         #region Methods
 
-        public async Task<bool> ValidateLoginAsync(string username, string password)
+        public async Task<(bool isValidated, User user)> ValidateLoginAsync(string username, string password)
         {
-            var user = await _userRepository.Table.Where(u => u.Username == username).FirstOrDefaultAsync();
+            var user = await _userRepository.Table
+                .Where(u => u.Username == username)
+                .FirstOrDefaultAsync();
+
             if (user == null)
-                return false;
+                return (false, null);
 
-            var salt = user.SaltPassword;
-            var storedHash = user.HashPassword;
+            var inputHash = ComputeHash(password, user.SaltPassword);
+            var isValid = string.Equals(inputHash, user.HashPassword, StringComparison.OrdinalIgnoreCase);
 
-            var inputHash = ComputeHash(password, salt);
-
-            return string.Equals(inputHash, storedHash, StringComparison.OrdinalIgnoreCase);
+            return (isValid, user);
         }
 
         #endregion

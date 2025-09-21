@@ -1,5 +1,7 @@
 ﻿using CafeMenuProject.Business.Abstract;
+using CafeMenuProject.WebUI.Helpers;
 using CafeMenuProject.WebUI.Models;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace CafeMenuProject.WebUI.Controllers
@@ -30,7 +32,36 @@ namespace CafeMenuProject.WebUI.Controllers
             return View(new LoginViewModel());
         }
 
+        [HttpPost]
+        public async Task<ActionResult> Login(LoginViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
 
+            var result = await _authenticationService.ValidateLoginAsync(model.Username, model.Password);
+            var user = result.user;
+
+            if (!result.isValidated || user == null)
+            {
+                ModelState.AddModelError("", "Invalid username or password.");
+                return View(model);
+            }
+
+            AuthHelper.SignIn(user.UserId, user.Username);
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        #endregion
+
+        #region Logout
+
+        public ActionResult Logout()
+        {
+            AuthHelper.SignOut();
+
+            return RedirectToAction("Login");
+        }
 
         #endregion
 

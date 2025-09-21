@@ -3,6 +3,7 @@ using System.Web.Mvc;
 
 namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
 {
+    [Authorize]
     public class BaseAdminController : Controller
     {
         #region Utilities

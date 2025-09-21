@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using CafeMenuProject.Core.Entities;
+using System.Threading.Tasks;
 
 namespace CafeMenuProject.Business.Abstract
 {
@@ -7,6 +8,6 @@ namespace CafeMenuProject.Business.Abstract
     /// </summary>
     public interface IAuthenticationService
     {
-        Task<bool> ValidateLoginAsync(string username, string password);
+        Task<(bool isValidated, User user)> ValidateLoginAsync(string username, string password);
     }
 }

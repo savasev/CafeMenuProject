@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var currentUser = CafeMenuProject.WebUI.Helpers.AuthHelper.GetCurrentUser();
+}
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -18,8 +22,16 @@
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Admin", "Dashboard", "Home", new { area = "Admin" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Login", "Login", "Account", new { area = "" }, new { @class = "nav-link" })</li>
+                    
+                    @if (currentUser != null)
+                    {
+                        <li>@Html.ActionLink("Admin", "Dashboard", "Home", new { area = "Admin" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Logout", "Logout", "Account", new { area = "" }, new { @class = "nav-link" })</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Login", "Login", "Account", new { area = "" }, new { @class = "nav-link" })</li>
+                    }
                 </ul>
             </div>
         </div>
