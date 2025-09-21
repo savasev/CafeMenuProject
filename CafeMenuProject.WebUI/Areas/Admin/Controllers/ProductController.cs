@@ -197,9 +197,9 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
             return View(model);
         }
 
-        [HttpPost]
+        [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(EditProductModel model)
+        public async Task<ActionResult> Edit(EditProductModel model, bool continueEditing)
         {
             var product = await _productService.GetProductByIdAsync(model.ProductId);
             if (product == null || product.IsDeleted)
@@ -214,7 +214,10 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
 
                 await _productService.UpdateProductAsync(product);
 
-                return RedirectToAction("List");
+                if (!continueEditing)
+                    return RedirectToAction("List");
+
+                return RedirectToAction("Edit", new { id = product.ProductId });
             }
 
             model = await PrepareEditProductModelAsync(product, model);
