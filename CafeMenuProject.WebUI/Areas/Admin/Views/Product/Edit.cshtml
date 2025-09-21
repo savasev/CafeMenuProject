@@ -105,7 +105,9 @@
                                     $(document).Toasts('create', {
                                         class: 'bg-success',
                                         title: 'Başarılı',
-                                        body: 'Ürün özelliği başarıyla silindi.'
+                                        body: 'Ürün özelliği başarıyla silindi.',
+                                        autohide: true,
+                                        delay: 5000
                                     });
 
                                     table.ajax.reload();
@@ -117,6 +119,8 @@
                                         class: 'bg-danger',
                                         title: 'Hata',
                                         body: message,
+                                        autohide: true,
+                                        delay: 5000
                                     });
                                 }
                             },
@@ -125,7 +129,9 @@
                                     class: 'bg-danger',
                                     title: 'Hata',
                                     subtitle: '',
-                                    body: 'Silme işlemi başarısız oldu.'
+                                    body: 'Silme işlemi başarısız oldu.',
+                                    autohide: true,
+                                    delay: 5000
                                 });
                             }
                         });
@@ -153,6 +159,8 @@
                                 class: 'bg-danger',
                                 title: 'Hata',
                                 body: message,
+                                autohide: true,
+                                delay: 5000
                             });
                         }
                     },
@@ -161,7 +169,9 @@
                             class: 'bg-danger',
                             title: 'Hata',
                             subtitle: '',
-                            body: 'İşlem başarısız oldu.'
+                            body: 'İşlem başarısız oldu.',
+                            autohide: true,
+                            delay: 5000
                         });
                     }
                 });
@@ -190,7 +200,9 @@
                             $(document).Toasts('create', {
                                 class: 'bg-success',
                                 title: 'Başarılı',
-                                body: 'Özellik başarıyla eklendi.'
+                                body: 'Özellik başarıyla eklendi.',
+                                autohide: true,
+                                delay: 5000
                             });
                         } else {
                             if (response.message && response.message.trim() !== '') {
@@ -198,6 +210,8 @@
                                     class: 'bg-danger',
                                     title: 'Hata',
                                     body: response.message,
+                                    autohide: true,
+                                    delay: 5000
                                 });
                             }
 
@@ -206,6 +220,8 @@
                                     class: 'bg-danger',
                                     title: 'Hata',
                                     body: err.message,
+                                    autohide: true,
+                                    delay: 5000
                                 });
                             });
                         }
@@ -245,7 +261,9 @@
                             $(document).Toasts('create', {
                                 class: 'bg-success',
                                 title: 'Başarılı',
-                                body: 'Özellik başarıyla güncellendi.'
+                                body: 'Özellik başarıyla güncellendi.',
+                                autohide: true,
+                                delay: 5000
                             });
                         } else {
                             if (response.message && response.message.trim() !== '') {
@@ -253,6 +271,8 @@
                                     class: 'bg-danger',
                                     title: 'Hata',
                                     body: response.message,
+                                    autohide: true,
+                                    delay: 5000
                                 });
                             }
 
@@ -261,6 +281,8 @@
                                     class: 'bg-danger',
                                     title: 'Hata',
                                     body: err.message,
+                                    autohide: true,
+                                    delay: 5000
                                 });
                             });
                         }

@@ -152,7 +152,9 @@
                                     $(document).Toasts('create', {
                                         class: 'bg-success',
                                         title: 'Başarılı',
-                                        body: 'Kullanıcı başarıyla silindi.'
+                                        body: 'Kullanıcı başarıyla silindi.',
+                                        autohide: true,
+                                        delay: 5000
                                     });
 
                                     table.ajax.reload();
@@ -164,6 +166,8 @@
                                         class: 'bg-danger',
                                         title: 'Hata',
                                         body: message,
+                                        autohide: true,
+                                        delay: 5000
                                     });
                                 }
                             },
@@ -172,7 +176,9 @@
                                     class: 'bg-danger',
                                     title: 'Hata',
                                     subtitle: '',
-                                    body: 'Silme işlemi başarısız oldu.'
+                                    body: 'Silme işlemi başarısız oldu.',
+                                    autohide: true,
+                                    delay: 5000
                                 });
                             }
                         });
