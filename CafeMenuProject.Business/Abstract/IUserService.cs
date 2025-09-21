@@ -1,5 +1,5 @@
-﻿using CafeMenuProject.Core.Entities;
-using System.Collections.Generic;
+﻿using CafeMenuProject.Core;
+using CafeMenuProject.Core.Entities;
 using System.Threading.Tasks;
 
 namespace CafeMenuProject.Business.Abstract
@@ -9,7 +9,9 @@ namespace CafeMenuProject.Business.Abstract
     /// </summary>
     public interface IUserService
     {
-        Task<IList<User>> GetAllUsersAsync();
+        Task<IPagedList<User>> GetAllUsersAsync(string username = "",
+            int pageIndex = 0,
+            int pageSize = int.MaxValue);
 
         Task<User> GetUserByIdAsync(int id);
 

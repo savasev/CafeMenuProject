@@ -1,7 +1,8 @@
 ﻿using CafeMenuProject.Business.Abstract;
+using CafeMenuProject.Core;
 using CafeMenuProject.Core.Entities;
 using CafeMenuProject.DataAccess.Abstract;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CafeMenuProject.Business.Concrete
@@ -33,9 +34,20 @@ namespace CafeMenuProject.Business.Concrete
             await _userRepository.DeleteAsync(user);
         }
 
-        public async Task<IList<User>> GetAllUsersAsync()
+        public async Task<IPagedList<User>> GetAllUsersAsync(string username = "",
+            int pageIndex = 0,
+            int pageSize = int.MaxValue)
         {
-            return await _userRepository.GetAllAsync();
+            return await _userRepository.GetAllPagedAsync(query =>
+            {
+                if (!string.IsNullOrWhiteSpace(username))
+                    query = query.Where(x => x.Username.Contains(username));
+
+                query = query.OrderBy(x => x.UserId);
+
+                return query;
+
+            }, pageIndex, pageSize);
         }
 
         public async Task<User> GetUserByIdAsync(int id)

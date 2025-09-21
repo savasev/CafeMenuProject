@@ -164,6 +164,8 @@
     <Compile Include="Areas\Admin\Models\Product\ProductViewModel.cs" />
     <Compile Include="Areas\Admin\Models\Property\PropertySearchModel.cs" />
     <Compile Include="Areas\Admin\Models\Property\PropertyViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\User\UserSearchModel.cs" />
+    <Compile Include="Areas\Admin\Models\User\UserViewModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Filters\ParameterBasedOnFormNameAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -2299,7 +2301,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Admin\Models\Users\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
