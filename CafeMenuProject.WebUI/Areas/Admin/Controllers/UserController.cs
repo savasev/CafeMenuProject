@@ -30,7 +30,8 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
 
         private async Task<DataTableResult<UserViewModel>> PrepareUserDataTableResultAsync(UserSearchModel searchModel)
         {
-            var users = await _userService.GetAllUsersAsync(pageIndex: searchModel.PageIndex,
+            var users = await _userService.GetAllUsersAsync(username: searchModel.Username,
+                pageIndex: searchModel.PageIndex,
                 pageSize: searchModel.PageSize);
 
             var result = new DataTableResult<UserViewModel>
