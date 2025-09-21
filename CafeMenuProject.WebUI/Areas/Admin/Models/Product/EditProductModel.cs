@@ -19,7 +19,7 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Models.Product
                 ProductId = ProductId
             };
 
-            CreateProductPropertyModel = new CreateProductPropertyModel { ProductId = ProductId };
+            CreatePropertyModel = new CreatePropertyModel { ProductId = ProductId };
         }
 
         #endregion
@@ -40,7 +40,7 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Models.Product
 
         public ProductPropertySearchModel ProductPropertySearchModel { get; set; }
 
-        public CreateProductPropertyModel CreateProductPropertyModel { get; set; }
+        public CreatePropertyModel CreatePropertyModel { get; set; }
 
         #endregion
     }

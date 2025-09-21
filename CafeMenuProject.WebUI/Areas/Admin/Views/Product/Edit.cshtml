@@ -21,127 +21,20 @@
 
 <section class="content">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="card card-danger card-outline">
-                    <div class="card-header with-border clearfix">
-                        <h3 class="card-title">
-                            <i class="fas fa-edit"></i> @ViewBag.Title
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        @using (Html.BeginForm("Edit", "Product", FormMethod.Post))
-                        {
-                            @Html.AntiForgeryToken()
-                            @Html.HiddenFor(x => x.ProductId)
+        @Html.Partial("_EditProductCard", Model)
 
-                            <div class="form-group">
-                                @Html.LabelFor(x => x.ProductName, "Ürün Adı", htmlAttributes: new { @class = "form-label" })
-                                @Html.TextBoxFor(x => x.ProductName, new { @class = "form-control", placeholder = "Ürün adı" })
-                                @Html.ValidationMessageFor(x => x.ProductName, "", new { @class = "text-danger" })
-                            </div>
+        @Html.Partial("_EditPropertyCard", Model)
 
-                            <div class="form-group">
-                                @Html.LabelFor(x => x.CategoryId, "Kategori", new { @class = "form-label" })
-                                @Html.DropDownListFor(
-                                    x => x.CategoryId,
-                                    new SelectList(Model.AvailableCategories, "Value", "Text", Model.CategoryId),
-                                    "Kategori seçiniz...",
-                                    new { @class = "form-control" }
-                                )
-                                @Html.ValidationMessageFor(x => x.CategoryId, "", new { @class = "text-danger" })
-                            </div>
+        @Html.Partial("_CreatePropertyModal", Model)
 
-                            <div class="form-group">
-                                @Html.LabelFor(x => x.Price, "Ürün Fiyatı", htmlAttributes: new { @class = "form-label" })
-                                @Html.TextBoxFor(x => x.Price, new { @class = "form-control", placeholder = "Ürün fiyatı" })
-                                @Html.ValidationMessageFor(x => x.Price, "", new { @class = "text-danger" })
-                            </div>
-
-                            <div class="form-group">
-                                @Html.LabelFor(x => x.ImagePath, "Ürün Resmi", htmlAttributes: new { @class = "form-label" })
-                                @Html.TextBoxFor(x => x.ImagePath, new { @class = "form-control", placeholder = "Ürün resmi" })
-                                @Html.ValidationMessageFor(x => x.ImagePath, "", new { @class = "text-danger" })
-                            </div>
-
-                            <div class="form-group mt-3">
-                                <button type="submit" class="btn btn-primary" name="save">Kaydet</button>
-                                <button type="submit" class="btn btn-primary" name="save-continue">Kaydet ve Devam Et</button>
-                                <a href="@Url.Action("Index", "Product")" class="btn btn-secondary">Vazgeç</a>
-                            </div>
-                        }
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row mt-3">
-            <div class="col-12">
-                <div class="card card-danger card-outline">
-                    <div class="card-header with-border clearfix">
-                        <h3 class="card-title">
-                            <i class="fas fa-edit"></i> Ürün Özellikleri
-                        </h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-create-product-property">
-                                <i class="fas fa-plus"></i> Yeni Özellik
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <table id="productproperties-datatable" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Key</th>
-                                    <th>Value</th>
-                                    <th>İşlem</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @Html.Partial("_EditPropertyModal")
     </div>
 </section>
 
-<div class="modal fade" id="modal-create-product-property" tabindex="-1" role="dialog" aria-labelledby="createProductPropertyModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="createProductPropertyModalLabel">Yeni Özellik</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    @Html.LabelFor(x => x.CreateProductPropertyModel.Key, "Özellik Adı (Key)", htmlAttributes: new { @class = "form-label" })
-                    @Html.TextBoxFor(x => x.CreateProductPropertyModel.Key, new { @class = "form-control", placeholder = "Key" })
-                    @Html.ValidationMessageFor(x => x.CreateProductPropertyModel.Key, "", new { @class = "text-danger" })
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(x => x.CreateProductPropertyModel.Value, "Özellik Değeri (Value)", htmlAttributes: new { @class = "form-label" })
-                    @Html.TextBoxFor(x => x.CreateProductPropertyModel.Value, new { @class = "form-control", placeholder = "Value" })
-                    @Html.ValidationMessageFor(x => x.CreateProductPropertyModel.Value, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
-                <button type="button" class="btn btn-primary" id="createProductPropertyModalSaveBtn">Kaydet</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 @section scripts {
-
     <script>
         $(function () {
-            var table = $('#productproperties-datatable').DataTable({
+            var table = $('#properties-datatable').DataTable({
                 processing: true,
                 serverSide: true,
                 ordering: false,
@@ -179,18 +72,18 @@
                         width: '15%',
                         className: 'text-center',
                         render: function (data, type, row) {
-                            return `<a href='/Admin/Product/Edit/${row.productPropertyId}' class='btn btn-primary btn-sm'>Düzenle</a>
-                                    <button class="btn btn-danger btn-sm delete-btn" data-id="${row.productPropertyId}">Sil</button>`;
+                            return `<button type="button" class='btn btn-primary btn-sm edit-btn' data-id="${row.propertyId}">Düzenle</button>
+                                    <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="${row.productPropertyId}">Sil</button>`;
                         }
                     }
                 ],
             });
 
-            $('#search-productproperties').on('click', function () {
+            $('#search-properties').on('click', function () {
                 table.ajax.reload();
             });
 
-            $('#productproperties-datatable').on('click', '.delete-btn', function () {
+            $('#properties-datatable').on('click', '.delete-btn', function () {
 
                 var id = $(this).data('id');
 
@@ -240,23 +133,57 @@
                 });
             });
 
-            $('#createProductPropertyModalSaveBtn').on('click', function () {
+            $('#properties-datatable').on('click', '.edit-btn', function () {
+
+                var id = $(this).data('id');
+
+                $.ajax({
+                    url: '/Admin/Product/EditProperty/' + id,
+                    type: 'GET',
+                    success: function (res) {
+                        if (res.success) {
+
+                            $('#modal-edit-property .modal-body').html(res.html);
+                            $('#modal-edit-property').modal('show');
+
+                        } else {
+                            var message = res.message || 'İşlem başarısız oldu.';
+
+                            $(document).Toasts('create', {
+                                class: 'bg-danger',
+                                title: 'Hata',
+                                body: message,
+                            });
+                        }
+                    },
+                    error: function () {
+                        $(document).Toasts('create', {
+                            class: 'bg-danger',
+                            title: 'Hata',
+                            subtitle: '',
+                            body: 'İşlem başarısız oldu.'
+                        });
+                    }
+                });
+            });
+
+            $('#createPropertyModalSaveBtn').on('click', function () {
                 var btn = $(this);
 
                 btn.prop('disabled', true);
                 btn.text('Kaydediliyor...');
 
                 $.ajax({
-                    url: '@Url.Action("CreateProductProperty", "Product")',
+                    url: '@Url.Action("CreateProperty", "Product")',
                     type: 'POST',
                     data: {
                         ProductId: '@Model.ProductId',
-                        Key: $('#@Html.IdFor(x => x.CreateProductPropertyModel.Key)').val(),
-                        Value: $('#@Html.IdFor(x => x.CreateProductPropertyModel.Value)').val()
+                        Key: $('#@Html.IdFor(x => x.CreatePropertyModel.Key)').val(),
+                        Value: $('#@Html.IdFor(x => x.CreatePropertyModel.Value)').val()
                     },
                     success: function (response) {
                         if (response.success) {
-                            $('#modal-create-product-property').modal('hide');
+                            $('#modal-create-property').modal('hide');
 
                             table.ajax.reload();
 
@@ -275,6 +202,52 @@
                         }
                     },
                     error: function (xhr, status, error) {
+                        console.log(error);
+                    },
+                    complete: function () {
+                        btn.prop('disabled', false);
+                        btn.text('Kaydet');
+                    }
+                });
+            });
+
+            $('#editPropertyModalSaveBtn').on('click', function () {
+                var btn = $(this);
+
+                btn.prop('disabled', true);
+                btn.text('Kaydediliyor...');
+
+                var postData = {
+                    PropertyId: $('#modal-edit-property').find('input[name="PropertyId"]').val(),
+                    Key: $('#modal-edit-property').find('input[name="Key"]').val(),
+                    Value: $('#modal-edit-property').find('input[name="Value"]').val(),
+                };
+
+                $.ajax({
+                    url: '@Url.Action("EditProperty", "Product")',
+                    type: 'POST',
+                    data: postData,
+                    success: function (response) {
+                        if (response.success) {
+                            $('#modal-edit-property').modal('hide');
+
+                            table.ajax.reload();
+
+                            $(document).Toasts('create', {
+                                class: 'bg-success',
+                                title: 'Başarılı',
+                                body: 'Özellik başarıyla güncellendi.'
+                            });
+                        } else {
+                            var message = response.message || 'Özellik güncelleme işlemi başarısız oldu.';
+                            $(document).Toasts('create', {
+                                class: 'bg-danger',
+                                title: 'Hata',
+                                body: message,
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
                         console.error(error);
                     },
                     complete: function () {
@@ -284,9 +257,19 @@
                 });
             });
 
-            $('#modal-create-product-property').on('hide.bs.modal', function () {
-                $('#@Html.IdFor(x => x.CreateProductPropertyModel.Key)').val('');
-                $('#@Html.IdFor(x => x.CreateProductPropertyModel.Value)').val('');
+            $('#modal-create-property').on('hide.bs.modal', function () {
+                $('#@Html.IdFor(x => x.CreatePropertyModel.Key)').val('');
+                $('#@Html.IdFor(x => x.CreatePropertyModel.Value)').val('');
+                $('#createPropertyModalSaveBtn').prop('disabled', false);
+                $('#createPropertyModalSaveBtn').text('Kaydet');
+            });
+
+            $('#modal-edit-property').on('hide.bs.modal', function () {
+                $('#modal-edit-property').find('input[name="PropertyId"]').val(0);
+                $('#modal-edit-property').find('input[name="Key"]').val('');
+                $('#modal-edit-property').find('input[name="Value"]').val('');
+                $('#editPropertyModalSaveBtn').prop('disabled', false);
+                $('#editPropertyModalSaveBtn').text('Kaydet');
             });
         });
     </script>
