@@ -1,4 +1,5 @@
 ﻿using CafeMenuProject.Business.Abstract;
+using CafeMenuProject.Core.Entities;
 using CafeMenuProject.WebUI.Areas.Admin.Models;
 using CafeMenuProject.WebUI.Areas.Admin.Models.User;
 using CafeMenuProject.WebUI.Infrastructure;
@@ -51,6 +52,14 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
             return result;
         }
 
+        private CreateUserModel PrepareCreateUserModel(CreateUserModel model = null)
+        {
+            if (model == null)
+                model = new CreateUserModel();
+
+            return model;
+        }
+
         #endregion
 
         #region Methods
@@ -84,7 +93,32 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
 
         public ActionResult Create()
         {
-            return View();
+            var model = PrepareCreateUserModel();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create(CreateUserModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new User
+                {
+                    Name = model.Name,
+                    Surname = model.Surname,
+                    Username = model.Username,
+                };
+
+                await _userService.InsertUserAsync(user);
+
+                return RedirectToAction("List");
+            }
+
+            model = PrepareCreateUserModel(model);
+
+            return View(model);
         }
 
         #endregion
