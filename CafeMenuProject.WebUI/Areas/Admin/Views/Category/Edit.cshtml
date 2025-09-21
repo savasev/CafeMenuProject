@@ -31,7 +31,6 @@
                 @using (Html.BeginForm("Edit", "Category", FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
-
                     @Html.HiddenFor(x => x.CategoryId)
 
                     <div class="form-group">
