@@ -1,7 +1,7 @@
 ﻿using CafeMenuProject.WebUI.Areas.Admin.Models.Product;
 using FluentValidation;
 
-namespace CafeMenuProject.WebUI.Areas.Admin.Validators
+namespace CafeMenuProject.WebUI.Areas.Admin.Validators.Product
 {
     public class EditProductValidator : AbstractValidator<EditProductModel>
     {
