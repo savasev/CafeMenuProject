@@ -334,6 +334,15 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
             if (product == null || product.IsDeleted)
                 return Json(new { success = false, message = "Ürün bulunamadı" });
 
+            if (!string.IsNullOrEmpty(product.ImagePath))
+            {
+                var oldFileFullPath = Server.MapPath(product.ImagePath);
+                if (System.IO.File.Exists(oldFileFullPath))
+                {
+                    System.IO.File.Delete(oldFileFullPath);
+                }
+            }
+
             await _productService.DeleteProductAsync(product);
 
             return Json(new { success = true });
