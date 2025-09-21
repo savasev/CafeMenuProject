@@ -17,16 +17,22 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
 
         private readonly ICategoryService _categoryService;
         private readonly IProductService _productService;
+        private readonly IPropertyService _propertyService;
+        private readonly IProductPropertyService _productPropertyService;
 
         #endregion
 
         #region Ctor
 
         public ProductController(ICategoryService categoryService,
-            IProductService productService)
+            IProductService productService,
+            IPropertyService propertyService,
+            IProductPropertyService productPropertyService)
         {
             _categoryService = categoryService;
             _productService = productService;
+            _propertyService = propertyService;
+            _productPropertyService = productPropertyService;
         }
 
         #endregion
@@ -281,6 +287,39 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
             var dataTableResult = await PrepareProductPropertyDataTableResultAsync(searchModel);
 
             return new JsonCamelCaseResult { Data = dataTableResult, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateProductProperty(CreateProductPropertyModel model)
+        {
+            var product = await _productService.GetProductByIdAsync(model.ProductId);
+            if (product == null || product.IsDeleted)
+                return Json(new { success = false, message = "Ürün bulunamadı" });
+
+            if (ModelState.IsValid)
+            {
+                var property = new Property
+                {
+                    Key = model.Key,
+                    Value = model.Value,
+                };
+
+                await _propertyService.InsertPropertyAsync(property);
+
+                var productProperty = new ProductProperty
+                {
+                    ProductId = model.ProductId,
+                    PropertyId = property.PropertyId,
+                };
+
+                await _productPropertyService.InsertProductPropertyAsync(productProperty);
+
+                return Json(new { success = true });
+            }
+
+            var errors = string.Join("<br/>", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
+
+            return Json(new { success = false, message = errors });
         }
 
         #endregion

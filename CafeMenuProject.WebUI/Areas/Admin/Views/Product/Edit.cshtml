@@ -82,6 +82,11 @@
                         <h3 class="card-title">
                             <i class="fas fa-edit"></i> Ürün Özellikleri
                         </h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-create-product-property">
+                                <i class="fas fa-plus"></i> Yeni Özellik
+                            </button>
+                        </div>
                     </div>
                     <div class="card-body">
                         <table id="productproperties-datatable" class="table table-bordered table-striped">
@@ -101,6 +106,36 @@
         </div>
     </div>
 </section>
+
+<div class="modal fade" id="modal-create-product-property" tabindex="-1" role="dialog" aria-labelledby="createProductPropertyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createProductPropertyModalLabel">Yeni Özellik</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.CreateProductPropertyModel.Key, "Özellik Adı (Key)", htmlAttributes: new { @class = "form-label" })
+                    @Html.TextBoxFor(x => x.CreateProductPropertyModel.Key, new { @class = "form-control", placeholder = "Key" })
+                    @Html.ValidationMessageFor(x => x.CreateProductPropertyModel.Key, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.CreateProductPropertyModel.Value, "Özellik Değeri (Value)", htmlAttributes: new { @class = "form-label" })
+                    @Html.TextBoxFor(x => x.CreateProductPropertyModel.Value, new { @class = "form-control", placeholder = "Value" })
+                    @Html.ValidationMessageFor(x => x.CreateProductPropertyModel.Value, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
+                <button type="button" class="btn btn-primary" id="createProductPropertyModalSaveBtn">Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section scripts {
 
@@ -204,6 +239,53 @@
                     }
                 });
             });
+
+            $('#createProductPropertyModalSaveBtn').on('click', function () {
+                var btn = $(this);
+
+                btn.prop('disabled', true);
+                btn.text('Kaydediliyor...');
+
+                $.ajax({
+                    url: '@Url.Action("CreateProductProperty", "Product")',
+                    type: 'POST',
+                    data: {
+                        ProductId: '@Model.ProductId',
+                        Key: $('#@Html.IdFor(x => x.CreateProductPropertyModel.Key)').val(),
+                        Value: $('#@Html.IdFor(x => x.CreateProductPropertyModel.Value)').val()
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            $('#modal-create-product-property').modal('hide');
+
+                            $(document).Toasts('create', {
+                                class: 'bg-success',
+                                title: 'Başarılı',
+                                body: 'Özellik başarıyla eklendi.'
+                            });
+                        } else {
+                            var message = response.message || 'Özellik ekleme işlemi başarısız oldu.';
+                            $(document).Toasts('create', {
+                                class: 'bg-danger',
+                                title: 'Hata',
+                                body: message,
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error);
+                    },
+                    complete: function () {
+                        btn.prop('disabled', false);
+                        btn.text('Kaydet');
+                    }
+                });
+            });
+
+            $('#modal-create-product-property').on('hide.bs.modal', function () {
+                $('#@Html.IdFor(x => x.CreateProductPropertyModel.Key)').val('');
+                $('#@Html.IdFor(x => x.CreateProductPropertyModel.Value)').val('');
+            });
         });
-        </script>
+    </script>
 }

@@ -158,6 +158,7 @@
     <Compile Include="Areas\Admin\Models\Category\EditCategoryModel.cs" />
     <Compile Include="Areas\Admin\Models\DataTableResult.cs" />
     <Compile Include="Areas\Admin\Models\Product\CreateProductModel.cs" />
+    <Compile Include="Areas\Admin\Models\Product\CreateProductPropertyModel.cs" />
     <Compile Include="Areas\Admin\Models\Product\EditProductModel.cs" />
     <Compile Include="Areas\Admin\Models\Product\ProductSearchModel.cs" />
     <Compile Include="Areas\Admin\Models\Product\ProductViewModel.cs" />

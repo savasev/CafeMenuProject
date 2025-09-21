@@ -18,6 +18,8 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Models.Product
                 PageSize = 20,
                 ProductId = ProductId
             };
+
+            CreateProductPropertyModel = new CreateProductPropertyModel { ProductId = ProductId };
         }
 
         #endregion
@@ -37,6 +39,8 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Models.Product
         public IList<SelectListItem> AvailableCategories { get; set; }
 
         public ProductPropertySearchModel ProductPropertySearchModel { get; set; }
+
+        public CreateProductPropertyModel CreateProductPropertyModel { get; set; }
 
         #endregion
     }
