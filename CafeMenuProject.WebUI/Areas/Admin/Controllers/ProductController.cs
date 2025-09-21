@@ -142,6 +142,27 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
             return result;
         }
 
+        private EditProductPropertyModel PrepareEditProductPropertyModel(EditProductPropertyModel model, ProductProperty productProperty, Property property)
+        {
+            if (productProperty == null)
+                throw new ArgumentNullException(nameof(productProperty));
+
+            if (property == null)
+                throw new ArgumentNullException(nameof(property));
+
+            if (model == null)
+            {
+                model = new EditProductPropertyModel
+                {
+                    ProductPropertyId = productProperty.ProductPropertyId,
+                    Key = property.Key,
+                    Value = property.Value,
+                };
+            }
+
+            return model;
+        }
+
         #endregion
 
         #region Methods
@@ -277,6 +298,22 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
         #endregion
 
         #region Product property methods
+
+        public async Task<ActionResult> ProductProperty(int id)
+        {
+            var productProperty = await _productPropertyService.GetProductPropertyByIdAsync(id);
+            if (productProperty == null)
+                return Json(new { success = false, message = "Ürün özellik bulunamadı" }, JsonRequestBehavior.AllowGet);
+
+            var property = await _propertyService.GetPropertyByIdAsync(id);
+            if (property == null)
+                return Json(new { success = false, message = "Ürün özellik bulunamadı" }, JsonRequestBehavior.AllowGet);
+
+            var model = PrepareEditProductPropertyModel(null, productProperty, property);
+            var html = RenderPartialViewToString("_EditProductProperty", model);
+
+            return Json(new { success = true, html = html }, JsonRequestBehavior.AllowGet);
+        }
 
         [HttpPost]
         public async Task<ActionResult> ProductPropertyList(ProductPropertySearchModel searchModel)

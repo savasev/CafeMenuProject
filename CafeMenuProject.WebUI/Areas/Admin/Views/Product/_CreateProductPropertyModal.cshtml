@@ -1,0 +1,31 @@
+﻿@model EditProductModel
+
+<div class="modal fade" id="modal-create-product-property" tabindex="-1" role="dialog" aria-labelledby="createProductPropertyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createProductPropertyModalLabel">Yeni Özellik</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.CreateProductPropertyModel.Key, "Özellik Adı (Key)", htmlAttributes: new { @class = "form-label" })
+                    @Html.TextBoxFor(x => x.CreateProductPropertyModel.Key, new { @class = "form-control", placeholder = "Key" })
+                    @Html.ValidationMessageFor(x => x.CreateProductPropertyModel.Key, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.CreateProductPropertyModel.Value, "Özellik Değeri (Value)", htmlAttributes: new { @class = "form-label" })
+                    @Html.TextBoxFor(x => x.CreateProductPropertyModel.Value, new { @class = "form-control", placeholder = "Value" })
+                    @Html.ValidationMessageFor(x => x.CreateProductPropertyModel.Value, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
+                <button type="button" class="btn btn-primary" id="createProductPropertyModalSaveBtn">Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>
