@@ -49,7 +49,7 @@ namespace CafeMenuProject.WebUI.Helpers
                 return null;
 
             var parts = ticket.UserData.Split('|');
-            if (parts.Length != 2)
+            if (parts.Length != 4)
                 return null;
 
             if (!int.TryParse(parts[0], out int userId))

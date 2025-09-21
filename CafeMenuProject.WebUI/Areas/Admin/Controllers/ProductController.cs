@@ -4,6 +4,7 @@ using CafeMenuProject.WebUI.Areas.Admin.Models;
 using CafeMenuProject.WebUI.Areas.Admin.Models.Product;
 using CafeMenuProject.WebUI.Areas.Admin.Validators.Product;
 using CafeMenuProject.WebUI.Filters;
+using CafeMenuProject.WebUI.Helpers;
 using CafeMenuProject.WebUI.Infrastructure;
 using System;
 using System.IO;
@@ -249,13 +250,15 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
                 filePath = "/Uploads/Products/" + fileName;
             }
 
+            var currentUser = AuthHelper.GetCurrentUser();
+
             var product = new Product
             {
                 ProductName = model.ProductName,
                 CategoryId = model.CategoryId,
                 Price = model.Price,
                 ImagePath = filePath,
-                CreatorUserId = 1,
+                CreatorUserId = currentUser?.userId ?? 0,
                 CreatedDate = DateTime.Now,
             };
 

@@ -3,6 +3,7 @@ using CafeMenuProject.Core.Entities;
 using CafeMenuProject.WebUI.Areas.Admin.Models;
 using CafeMenuProject.WebUI.Areas.Admin.Models.Category;
 using CafeMenuProject.WebUI.Areas.Admin.Validators.Category;
+using CafeMenuProject.WebUI.Helpers;
 using CafeMenuProject.WebUI.Infrastructure;
 using System;
 using System.Linq;
@@ -151,11 +152,13 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
 
             #endregion
 
+            var currentUser = AuthHelper.GetCurrentUser();
+
             var category = new Category
             {
                 CategoryName = model.CategoryName,
                 ParentCategoryId = model.ParentCategoryId,
-                CreatorUserId = 1,
+                CreatorUserId = currentUser?.userId ?? 0,
                 CreatedDate = DateTime.Now,
             };
 
