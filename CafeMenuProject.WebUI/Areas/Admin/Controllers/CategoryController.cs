@@ -2,6 +2,7 @@
 using CafeMenuProject.Core.Entities;
 using CafeMenuProject.WebUI.Areas.Admin.Models;
 using CafeMenuProject.WebUI.Areas.Admin.Models.Category;
+using CafeMenuProject.WebUI.Areas.Admin.Validators.Category;
 using CafeMenuProject.WebUI.Infrastructure;
 using System;
 using System.Linq;
@@ -132,24 +133,35 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CreateCategoryModel model)
         {
-            if (ModelState.IsValid)
+            #region Validation
+
+            var validator = new CreateCategoryValidator();
+            var validationResult = validator.Validate(model);
+
+            if (!validationResult.IsValid)
             {
-                var category = new Category
+                foreach (var error in validationResult.Errors)
                 {
-                    CategoryName = model.CategoryName,
-                    ParentCategoryId = model.ParentCategoryId,
-                    CreatorUserId = 1,
-                    CreatedDate = DateTime.Now,
-                };
+                    ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                }
 
-                await _categoryService.InsertCategoryAsync(category);
-
-                return RedirectToAction("List");
+                model = await PrepareCreateCategoryModelAsync(model);
+                return View(model);
             }
 
-            model = await PrepareCreateCategoryModelAsync(model);
+            #endregion
 
-            return View(model);
+            var category = new Category
+            {
+                CategoryName = model.CategoryName,
+                ParentCategoryId = model.ParentCategoryId,
+                CreatorUserId = 1,
+                CreatedDate = DateTime.Now,
+            };
+
+            await _categoryService.InsertCategoryAsync(category);
+
+            return RedirectToAction("List");
         }
 
         #endregion
@@ -175,19 +187,30 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
             if (category == null || category.IsDeleted)
                 return RedirectToAction("List");
 
-            if (ModelState.IsValid)
+            #region Validation
+
+            var validator = new EditCategoryValidator();
+            var validationResult = validator.Validate(model);
+
+            if (!validationResult.IsValid)
             {
-                category.CategoryName = model.CategoryName;
-                category.ParentCategoryId = model.ParentCategoryId;
+                foreach (var error in validationResult.Errors)
+                {
+                    ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                }
 
-                await _categoryService.UpdateCategoryAsync(category);
-
-                return RedirectToAction("List");
+                model = await PrepareEditCategoryModelAsync(category, model);
+                return View(model);
             }
 
-            model = await PrepareEditCategoryModelAsync(category, model);
+            #endregion
 
-            return View(model);
+            category.CategoryName = model.CategoryName;
+            category.ParentCategoryId = model.ParentCategoryId;
+
+            await _categoryService.UpdateCategoryAsync(category);
+
+            return RedirectToAction("List");
         }
 
         #endregion

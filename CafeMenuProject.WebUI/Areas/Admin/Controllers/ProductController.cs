@@ -2,10 +2,9 @@
 using CafeMenuProject.Core.Entities;
 using CafeMenuProject.WebUI.Areas.Admin.Models;
 using CafeMenuProject.WebUI.Areas.Admin.Models.Product;
-using CafeMenuProject.WebUI.Areas.Admin.Validators;
+using CafeMenuProject.WebUI.Areas.Admin.Validators.Product;
 using CafeMenuProject.WebUI.Filters;
 using CafeMenuProject.WebUI.Infrastructure;
-using FluentValidation;
 using System;
 using System.IO;
 using System.Linq;
