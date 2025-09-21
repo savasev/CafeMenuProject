@@ -24,6 +24,7 @@ namespace CafeMenuProject.WebUI.App_Start
             container.RegisterType<IProductService, ProductService>();
             container.RegisterType<IPropertyService, PropertyService>();
             container.RegisterType<IProductPropertyService, ProductPropertyService>();
+            container.RegisterType<IAuthenticationService, AuthenticationService>();
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }

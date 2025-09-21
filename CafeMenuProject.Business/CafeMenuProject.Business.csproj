@@ -51,11 +51,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\IAuthenticationService.cs" />
     <Compile Include="Abstract\ICategoryService.cs" />
     <Compile Include="Abstract\IProductPropertyService.cs" />
     <Compile Include="Abstract\IProductService.cs" />
     <Compile Include="Abstract\IPropertyService.cs" />
     <Compile Include="Abstract\IUserService.cs" />
+    <Compile Include="Concrete\AuthenticationService.cs" />
     <Compile Include="Concrete\CategoryService.cs" />
     <Compile Include="Concrete\Dtos\ProductPropertyDto.cs" />
     <Compile Include="Concrete\ProductPropertyService.cs" />
