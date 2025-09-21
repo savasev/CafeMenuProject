@@ -13,6 +13,11 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Models.Product
         public EditProductModel()
         {
             AvailableCategories = new List<SelectListItem>();
+            ProductPropertySearchModel = new ProductPropertySearchModel
+            {
+                PageSize = 20,
+                ProductId = ProductId
+            };
         }
 
         #endregion
@@ -30,6 +35,8 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Models.Product
         public string ImagePath { get; set; }
 
         public IList<SelectListItem> AvailableCategories { get; set; }
+
+        public ProductPropertySearchModel ProductPropertySearchModel { get; set; }
 
         #endregion
     }

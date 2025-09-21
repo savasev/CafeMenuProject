@@ -1,8 +1,13 @@
 ﻿using CafeMenuProject.Business.Abstract;
+using CafeMenuProject.Business.Concrete.Dtos;
 using CafeMenuProject.Core;
 using CafeMenuProject.Core.Entities;
 using CafeMenuProject.DataAccess.Abstract;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace CafeMenuProject.Business.Concrete
@@ -77,25 +82,42 @@ namespace CafeMenuProject.Business.Concrete
             await _productRepository.UpdateAsync(product);
         }
 
-        public async Task<IPagedList<Property>> GetAllProductPropertiesAsync(int productId,
+        public async Task<IPagedList<ProductPropertyDto>> GetAllProductPropertyDtosAsync(int productId,
             int pageIndex = 0,
             int pageSize = int.MaxValue)
         {
-            return await _propertyRepository.GetAllPagedAsync(query =>
+            var productProperties = await _productPropertyRepository.GetAllPagedAsync(query =>
             {
-                if (productId > 0)
-                {
-                    query = from q in query
-                            join productProductRepo in _productPropertyRepository.Table on q.PropertyId equals productProductRepo.PropertyId
-                            where productProductRepo.ProductId == productId
-                            select q;
-                }
+                query = query.Where(x => x.ProductId == productId);
 
-                query = query.OrderBy(x => x.PropertyId);
-
-                return query;
+                return query.OrderBy(x => x.ProductPropertyId);
 
             }, pageIndex, pageSize);
+
+            if (!productProperties.Any())
+                return new PagedList<ProductPropertyDto>(new List<ProductPropertyDto>(), pageIndex, pageSize, productProperties.TotalCount);
+
+            var propertyIds = productProperties.Select(x => x.PropertyId).ToList();
+
+            var properties = await _propertyRepository.Table
+                .Where(p => propertyIds.Contains(p.PropertyId))
+                .ToListAsync();
+
+            var propertyDict = properties.ToDictionary(p => p.PropertyId);
+
+            var dtoList = productProperties.Select(pp => new ProductPropertyDto
+            {
+                ProductPropertyId = pp.ProductPropertyId,
+                ProductId = pp.ProductId,
+                PropertyId = pp.PropertyId,
+                Key = propertyDict.ContainsKey(pp.PropertyId) ? propertyDict[pp.PropertyId].Key : null,
+                Value = propertyDict.ContainsKey(pp.PropertyId) ? propertyDict[pp.PropertyId].Value : null
+            }).ToList();
+
+            return new PagedList<ProductPropertyDto>(dtoList,
+                productProperties.PageIndex,
+                productProperties.PageSize,
+                productProperties.TotalCount);
         }
 
         #endregion

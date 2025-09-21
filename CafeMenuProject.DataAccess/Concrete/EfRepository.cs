@@ -66,9 +66,10 @@ namespace CafeMenuProject.DataAccess.Concrete
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IList<TEntity>> GetAllAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> func = null)
+        public async Task<IList<TEntity>> GetAllAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> func = null,
+            bool includeDeleted = true)
         {
-            var query = Table;
+            var query = AddDeletedFilter(Table, includeDeleted);
             if (func != null)
                 query = func(query);
 

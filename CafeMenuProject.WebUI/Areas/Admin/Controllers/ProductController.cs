@@ -113,9 +113,34 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
             return model;
         }
 
+        private async Task<DataTableResult<ProductPropertyViewModel>> PrepareProductPropertyDataTableResultAsync(ProductPropertySearchModel searchModel)
+        {
+            var products = await _productService.GetAllProductPropertyDtosAsync(productId: searchModel.ProductId,
+                pageIndex: searchModel.PageIndex,
+                pageSize: searchModel.PageSize);
+
+            var result = new DataTableResult<ProductPropertyViewModel>
+            {
+                Draw = searchModel.Draw,
+                RecordsTotal = products.TotalCount,
+                RecordsFiltered = products.TotalCount,
+                Data = products.Select(x => new ProductPropertyViewModel
+                {
+                    ProductPropertyId = x.ProductPropertyId,
+                    PropertyId = x.PropertyId,
+                    Key = x.Key,
+                    Value = x.Value,
+                }).ToList()
+            };
+
+            return result;
+        }
+
         #endregion
 
         #region Methods
+
+        #region Product methods
 
         #region List
 
@@ -239,6 +264,23 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
             await _productService.DeleteProductAsync(product);
 
             return Json(new { success = true });
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Product property methods
+
+        [HttpPost]
+        public async Task<ActionResult> ProductPropertyList(ProductPropertySearchModel searchModel)
+        {
+            if (searchModel == null)
+                throw new ArgumentNullException(nameof(searchModel));
+
+            var dataTableResult = await PrepareProductPropertyDataTableResultAsync(searchModel);
+
+            return new JsonCamelCaseResult { Data = dataTableResult, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
 
         #endregion

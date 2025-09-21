@@ -148,7 +148,6 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\BaseAdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\CategoryController.cs" />
-    <Compile Include="Areas\Admin\Controllers\ComponentsController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserController.cs" />
@@ -162,8 +161,8 @@
     <Compile Include="Areas\Admin\Models\Product\EditProductModel.cs" />
     <Compile Include="Areas\Admin\Models\Product\ProductSearchModel.cs" />
     <Compile Include="Areas\Admin\Models\Product\ProductViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\Property\PropertySearchModel.cs" />
-    <Compile Include="Areas\Admin\Models\Property\PropertyViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\Product\ProductPropertySearchModel.cs" />
+    <Compile Include="Areas\Admin\Models\Product\ProductPropertyViewModel.cs" />
     <Compile Include="Areas\Admin\Models\User\CreateUserModel.cs" />
     <Compile Include="Areas\Admin\Models\User\EditUserModel.cs" />
     <Compile Include="Areas\Admin\Models\User\UserSearchModel.cs" />
@@ -2276,7 +2275,6 @@
     <Content Include="Areas\Admin\Views\Product\Create.cshtml" />
     <Content Include="Areas\Admin\Views\User\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\User\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\Components\_ProductProperyWidget.cshtml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />

@@ -1,9 +1,9 @@
-﻿namespace CafeMenuProject.WebUI.Areas.Admin.Models.Property
+﻿namespace CafeMenuProject.WebUI.Areas.Admin.Models.Product
 {
     /// <summary>
     /// Property search model
     /// </summary>
-    public class PropertySearchModel : BaseSearchModel
+    public class ProductPropertySearchModel : BaseSearchModel
     {
         #region Properties
 

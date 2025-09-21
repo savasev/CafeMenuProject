@@ -21,9 +21,6 @@ namespace CafeMenuProject.DataAccess.Configurations
             Property(x => x.IsDeleted)
                 .HasColumnAnnotation("DefaultValue", false);
 
-            Property(x => x.IsDeleted)
-                .IsRequired();
-
             Property(x => x.CreatedDate)
                 .IsRequired();
         }

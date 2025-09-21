@@ -1,10 +1,12 @@
-﻿namespace CafeMenuProject.WebUI.Areas.Admin.Models.Property
+﻿namespace CafeMenuProject.Business.Concrete.Dtos
 {
     /// <summary>
-    /// Property view model
+    /// Product property dto
     /// </summary>
-    public class PropertyViewModel
+    public class ProductPropertyDto
     {
+        public int ProductPropertyId { get; set; }
+
         public int ProductId { get; set; }
 
         public int PropertyId { get; set; }

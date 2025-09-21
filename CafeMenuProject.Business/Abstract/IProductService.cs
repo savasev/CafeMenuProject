@@ -1,4 +1,5 @@
-﻿using CafeMenuProject.Core;
+﻿using CafeMenuProject.Business.Concrete.Dtos;
+using CafeMenuProject.Core;
 using CafeMenuProject.Core.Entities;
 using System.Threading.Tasks;
 
@@ -22,7 +23,7 @@ namespace CafeMenuProject.Business.Abstract
 
         Task DeleteProductAsync(Product product);
 
-        Task<IPagedList<Property>> GetAllProductPropertiesAsync(int productId,
+        Task<IPagedList<ProductPropertyDto>> GetAllProductPropertyDtosAsync(int productId,
             int pageIndex = 0,
             int pageSize = int.MaxValue);
     }

@@ -1,12 +1,125 @@
-﻿@model PropertySearchModel
+﻿@model ProductPropertySearchModel
 
 <div class="card card-danger card-outline">
     <div class="card-header with-border clearfix">
         <h3 class="card-title">
-            <i class="fas fa-edit"></i> Propert Listesi
+            <i class="fas fa-edit"></i> Ürün Özellikleri
         </h3>
     </div>
     <div class="card-body">
-
+        <table id="productproperties-datatable" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Key</th>
+                    <th>Value</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
     </div>
 </div>
+
+<script>
+    $(function () {
+        var table = $('#productproperties-datatable').DataTable({
+            processing: true,
+            serverSide: true,
+            ordering: false,
+            responsive: true,
+            lengthChange: false,
+            autoWidth: false,
+            searching: false,
+            pageLength: @Model.PageSize,
+            ajax: {
+                url: '@Url.Action("ProductPropertyList", "Product")',
+                type: 'POST',
+                data: function (d) {
+                    return {
+                        Draw: d.draw,
+                        PageIndex: Math.floor(d.start / d.length),
+                        PageSize: d.length,
+                        ProductId: $('#@Html.IdFor(m => m.ProductId)').val(),
+                    };
+                }
+            },
+            columns: [
+                {
+                    data: 'productPropertyId',
+                    width: '5%',
+                    className: 'text-center'
+                },
+                {
+                    data: 'key'
+                },
+                {
+                    data: 'value',
+                },
+                {
+                    data: null,
+                    width: '15%',
+                    className: 'text-center',
+                    render: function (data, type, row) {
+                        return `<a href='/Admin/Product/Edit/${row.productPropertyId}' class='btn btn-primary btn-sm'>Düzenle</a>
+                                <button class="btn btn-danger btn-sm delete-btn" data-id="${row.productPropertyId}">Sil</button>`;
+                    }
+                }
+            ],
+        });
+
+        $('#search-productproperties').on('click', function () {
+            table.ajax.reload();
+        });
+
+        $('#productproperties-datatable').on('click', '.delete-btn', function () {
+
+            var id = $(this).data('id');
+
+            Swal.fire({
+                title: 'Emin misiniz?',
+                text: "Bu kaydı silmek istediğinize emin misiniz?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Evet, sil!',
+                cancelButtonText: 'Vazgeç'
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/Admin/Product/DeleteProductProperty/' + id,
+                        type: 'POST',
+                        success: function (res) {
+                            if (res.success) {
+                                $(document).Toasts('create', {
+                                    class: 'bg-success',
+                                    title: 'Başarılı',
+                                    body: 'Ürün özelliği başarıyla silindi.'
+                                });
+
+                                table.ajax.reload();
+
+                            } else {
+                                var message = res.message || 'Silme işlemi başarısız oldu.';
+
+                                $(document).Toasts('create', {
+                                    class: 'bg-danger',
+                                    title: 'Hata',
+                                    body: message,
+                                });
+                            }
+                        },
+                        error: function () {
+                            $(document).Toasts('create', {
+                                class: 'bg-danger',
+                                title: 'Hata',
+                                subtitle: '',
+                                body: 'Silme işlemi başarısız oldu.'
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
