@@ -258,6 +258,8 @@
                         if (response.success) {
                             $('#modal-create-product-property').modal('hide');
 
+                            table.ajax.reload();
+
                             $(document).Toasts('create', {
                                 class: 'bg-success',
                                 title: 'Başarılı',
