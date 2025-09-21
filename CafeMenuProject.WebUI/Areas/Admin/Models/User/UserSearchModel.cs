@@ -5,5 +5,10 @@
     /// </summary>
     public class UserSearchModel : BaseSearchModel
     {
+        #region Properties
+
+        public string Username { get; set; }
+
+        #endregion
     }
 }

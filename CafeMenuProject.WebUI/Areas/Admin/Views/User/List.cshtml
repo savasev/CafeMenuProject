@@ -1,4 +1,6 @@
-﻿@{
+﻿@model UserSearchModel
+
+@{
     ViewBag.Title = "Kullanıcılar";
 }
 
@@ -19,6 +21,164 @@
 
 <section class="content">
     <div class="container-fluid">
-
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-default card-outline">
+                    <div class="card-header with-border clearfix">
+                        <h3 class="card-title">Arama</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group row">
+                                    <div class="col-md-4">
+                                        @Html.LabelFor(x => x.Username, "Kullanıcı Adı", htmlAttributes: new { @class = "col-form-label float-right" })
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(x => x.Username, new { @class = "form-control", placeholder = "Kullanıcı adı" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 offset-2">
+                                <button type="button" class="btn btn-primary btn-search" id="search-users">
+                                    <i class="fa fa-search" aria-hidden="true"></i> Ara
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-default card-outline">
+                    <div class="card-body">
+                        <table id="users-datatable" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Ad</th>
+                                    <th>Soyad</th>
+                                    <th>Kullanıcı adı</th>
+                                    <th>İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
+
+@section scripts {
+
+    <script>
+        $(function () {
+            var table = $('#users-datatable').DataTable({
+                processing: true,
+                serverSide: true,
+                ordering: false,
+                responsive: true,
+                lengthChange: false,
+                autoWidth: false,
+                searching: false,
+                pageLength: @Model.PageSize,
+                ajax: {
+                    url: '@Url.Action("UserList", "User")',
+                    type: 'POST',
+                    data: function (d) {
+                        return {
+                            Draw: d.draw,
+                            PageIndex: Math.floor(d.start / d.length),
+                            PageSize: d.length,
+                            Username: $('#@Html.IdFor(m => m.Username)').val()
+                        };
+                    }
+                },
+                columns: [
+                    {
+                        data: 'userId',
+                        width: '5%',
+                        className: 'text-center'
+                    },
+                    {
+                        data: 'name'
+                    },
+                    {
+                        data: 'surname',
+                    },
+                    {
+                        data: 'username'
+                    },
+                    {
+                        data: null,
+                        width: '15%',
+                        className: 'text-center',
+                        render: function (data, type, row) {
+                            return `<a href='/Admin/User/Edit/${row.userId}' class='btn btn-primary btn-sm'>Düzenle</a>
+                                    <button class="btn btn-danger btn-sm delete-btn" data-id="${row.userId}">Sil</button>`;
+                        }
+                    }
+                ],
+            });
+
+            $('#search-users').on('click', function () {
+                table.ajax.reload();
+            });
+
+            $('#users-datatable').on('click', '.delete-btn', function () {
+
+                var id = $(this).data('id');
+
+                Swal.fire({
+                    title: 'Emin misiniz?',
+                    text: "Bu kaydı silmek istediğinize emin misiniz?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Evet, sil!',
+                    cancelButtonText: 'Vazgeç'
+                }).then((result) => {
+
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '/Admin/User/Delete/' + id,
+                            type: 'POST',
+                            success: function (res) {
+                                if (res.success) {
+                                    $(document).Toasts('create', {
+                                        class: 'bg-success',
+                                        title: 'Başarılı',
+                                        body: 'Kullanıcı başarıyla silindi.'
+                                    });
+
+                                    table.ajax.reload();
+
+                                } else {
+                                    var message = res.message || 'Silme işlemi başarısız oldu.';
+
+                                    $(document).Toasts('create', {
+                                        class: 'bg-danger',
+                                        title: 'Hata',
+                                        body: message,
+                                    });
+                                }
+                            },
+                            error: function () {
+                                $(document).Toasts('create', {
+                                    class: 'bg-danger',
+                                    title: 'Hata',
+                                    subtitle: '',
+                                    body: 'Silme işlemi başarısız oldu.'
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}
