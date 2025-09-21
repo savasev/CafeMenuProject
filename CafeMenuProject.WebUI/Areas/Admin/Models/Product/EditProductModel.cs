@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Web;
 using System.Web.Mvc;
 
 namespace CafeMenuProject.WebUI.Areas.Admin.Models.Product
@@ -34,7 +35,7 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Models.Product
 
         public decimal Price { get; set; }
 
-        public string ImagePath { get; set; }
+        public HttpPostedFileBase ImageFile { get; set; }
 
         public IList<SelectListItem> AvailableCategories { get; set; }
 

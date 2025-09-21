@@ -5,6 +5,7 @@ using CafeMenuProject.WebUI.Areas.Admin.Models.Product;
 using CafeMenuProject.WebUI.Filters;
 using CafeMenuProject.WebUI.Infrastructure;
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -105,7 +106,6 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
                     ProductId = product.ProductId,
                     ProductName = product.ProductName,
                     CategoryId = product.CategoryId,
-                    ImagePath = product.ImagePath,
                     Price = product.Price,
                 };
             }
@@ -208,12 +208,30 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                string filePath = null;
+
+                if (model.ImageFile != null && model.ImageFile.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(model.ImageFile.FileName);
+                    var uploadDirectory = Server.MapPath("~/Uploads/Products");
+
+                    if (!Directory.Exists(uploadDirectory))
+                    {
+                        Directory.CreateDirectory(uploadDirectory);
+                    }
+
+                    var fullPath = Path.Combine(uploadDirectory, fileName);
+                    model.ImageFile.SaveAs(fullPath);
+
+                    filePath = "/Uploads/Products/" + fileName;
+                }
+
                 var product = new Product
                 {
                     ProductName = model.ProductName,
                     CategoryId = model.CategoryId,
                     Price = model.Price,
-                    ImagePath = model.ImagePath,
+                    ImagePath = filePath,
                     CreatorUserId = 1,
                     CreatedDate = DateTime.Now,
                 };
@@ -256,10 +274,41 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
+                string filePath = null;
+
+                if (model.ImageFile != null && model.ImageFile.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(model.ImageFile.FileName);
+                    var uploadDirectory = Server.MapPath("~/Uploads/Products");
+
+                    if (!Directory.Exists(uploadDirectory))
+                    {
+                        Directory.CreateDirectory(uploadDirectory);
+                    }
+
+                    var fullPath = Path.Combine(uploadDirectory, fileName);
+
+                    if (!string.IsNullOrEmpty(product.ImagePath))
+                    {
+                        var oldFileFullPath = Server.MapPath(product.ImagePath);
+                        if (System.IO.File.Exists(oldFileFullPath))
+                        {
+                            System.IO.File.Delete(oldFileFullPath);
+                        }
+                    }
+
+                    model.ImageFile.SaveAs(fullPath);
+                    filePath = "/Uploads/Products/" + fileName;
+                }
+                else
+                {
+                    filePath = product.ImagePath;
+                }
+
                 product.ProductName = model.ProductName;
                 product.CategoryId = model.CategoryId;
                 product.Price = model.Price;
-                product.ImagePath = model.ImagePath;
+                product.ImagePath = filePath;
 
                 await _productService.UpdateProductAsync(product);
 
