@@ -1,4 +1,7 @@
-﻿using System.Web.Mvc;
+﻿using CafeMenuProject.Business.Abstract;
+using CafeMenuProject.WebUI.Areas.Admin.Models.Property;
+using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
 {
@@ -6,15 +9,15 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
     {
         #region Fields
 
-
+        private readonly IProductService _productService;
 
         #endregion
 
         #region Ctor
 
-        public ComponentsController()
+        public ComponentsController(IProductService productService)
         {
-            
+            _productService = productService;
         }
 
         #endregion
@@ -22,9 +25,13 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
         #region Methods
 
         [ChildActionOnly]
-        public ActionResult ProductProperyWidget(int productId)
+        public async Task<ActionResult> ProductProperyWidget(int productId)
         {
-            return PartialView("_ProductProperyWidget");
+            var product = await _productService.GetProductByIdAsync(productId);
+            if (product == null || product.IsDeleted)
+                return Content(string.Empty);
+
+            return PartialView("_ProductProperyWidget", new PropertySearchModel { ProductId = productId, PageSize = 15 });
         }
 
         #endregion
