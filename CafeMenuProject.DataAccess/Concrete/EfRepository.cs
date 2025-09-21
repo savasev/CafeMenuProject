@@ -146,6 +146,30 @@ namespace CafeMenuProject.DataAccess.Concrete
             }
         }
 
+        public async Task<(bool isSuccess, string message)> UpdateWithSpAsync(string storedProcedureName, params SqlParameter[] parameters)
+        {
+            if (string.IsNullOrWhiteSpace(storedProcedureName))
+                throw new ArgumentNullException(nameof(storedProcedureName));
+
+            if (parameters == null)
+                parameters = Array.Empty<SqlParameter>();
+
+            try
+            {
+                await _context.Database.ExecuteSqlCommandAsync(storedProcedureName, parameters);
+
+                return (true, string.Empty);
+            }
+            catch (SqlException exc)
+            {
+                return (false, exc.Message);
+            }
+            catch (Exception exc)
+            {
+                return (false, exc.Message);
+            }
+        }
+
         #endregion
 
         #region Properties

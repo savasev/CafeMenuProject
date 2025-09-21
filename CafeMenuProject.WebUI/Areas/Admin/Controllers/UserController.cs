@@ -2,6 +2,7 @@
 using CafeMenuProject.Core.Entities;
 using CafeMenuProject.WebUI.Areas.Admin.Models;
 using CafeMenuProject.WebUI.Areas.Admin.Models.User;
+using CafeMenuProject.WebUI.Areas.Admin.Validators.User;
 using CafeMenuProject.WebUI.Infrastructure;
 using System;
 using System.Linq;
@@ -60,6 +61,25 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
             return model;
         }
 
+        private EditUserModel PrepareEditUserModel(EditUserModel model, User user)
+        {
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+
+            if (model == null)
+            {
+                model = new EditUserModel
+                {
+                    UserId = user.UserId,
+                    Name = user.Name,
+                    Surname = user.Surname,
+                    Username = user.Username,
+                };
+            }
+
+            return model;
+        }
+
         #endregion
 
         #region Methods
@@ -102,40 +122,98 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CreateUserModel model)
         {
-            if (ModelState.IsValid)
+            #region Validation
+
+            var validator = new CreateUserValidator();
+            var validationResult = validator.Validate(model);
+
+            if (!validationResult.IsValid)
             {
-                var user = new User
+                foreach (var error in validationResult.Errors)
                 {
-                    Name = model.Name,
-                    Surname = model.Surname,
-                    Username = model.Username,
-                };
-
-                var (isSuccess, message) = await _userService.InsertUserWithSpAsync(user, model.Password);
-                if (!isSuccess)
-                {
-                    ViewBag.ErrorMessage = message;
-
-                    model = PrepareCreateUserModel(model);
-
-                    return View(model);
+                    ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
                 }
 
-                return RedirectToAction("List");
+                model = PrepareCreateUserModel(model);
+                return View(model);
             }
 
-            model = PrepareCreateUserModel(model);
+            #endregion
 
-            return View(model);
+            var user = new User
+            {
+                Name = model.Name,
+                Surname = model.Surname,
+                Username = model.Username,
+            };
+
+            var (isSuccess, message) = await _userService.InsertUserWithSpAsync(user, model.Password);
+            if (!isSuccess)
+            {
+                ViewBag.ErrorMessage = message;
+
+                model = PrepareCreateUserModel(model);
+
+                return View(model);
+            }
+
+            return RedirectToAction("List");
         }
 
         #endregion
 
         #region Edit
 
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            var user = await _userService.GetUserByIdAsync(id);
+            if (user == null)
+                return RedirectToAction("List");
+
+            return View(PrepareEditUserModel(null, user));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(EditUserModel model)
+        {
+            var user = await _userService.GetUserByIdAsync(model.UserId);
+            if (user == null)
+                return RedirectToAction("List");
+
+            #region Validation
+
+            var validator = new EditUserValidator();
+            var validationResult = validator.Validate(model);
+
+            if (!validationResult.IsValid)
+            {
+                foreach (var error in validationResult.Errors)
+                {
+                    ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                }
+
+                model = PrepareEditUserModel(model, user);
+                return View(model);
+            }
+
+            #endregion
+
+            user.Name = model.Name;
+            user.Surname = model.Surname;
+            user.Username = model.Username;
+
+            var (isSuccess, message) = await _userService.UpdateUserWithSpAsync(user, model.Password);
+            if (!isSuccess)
+            {
+                ViewBag.ErrorMessage = message;
+
+                model = PrepareEditUserModel(model, user);
+
+                return View(model);
+            }
+
+            return RedirectToAction("List");
         }
 
         #endregion

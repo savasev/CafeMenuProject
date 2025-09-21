@@ -1,6 +1,7 @@
 ﻿using CafeMenuProject.Core;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -31,7 +32,9 @@ namespace CafeMenuProject.DataAccess.Abstract
 
         Task DeleteAsync(TEntity entity);
 
-        Task<(bool isSuccess, string message)> InsertWithSpAsync(string storedProcedureName, params System.Data.SqlClient.SqlParameter[] parameters);
+        Task<(bool isSuccess, string message)> InsertWithSpAsync(string storedProcedureName, params SqlParameter[] parameters);
+
+        Task<(bool isSuccess, string message)> UpdateWithSpAsync(string storedProcedureName, params SqlParameter[] parameters);
 
         #endregion
 

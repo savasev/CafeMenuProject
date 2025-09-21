@@ -80,6 +80,20 @@ namespace CafeMenuProject.Business.Concrete
             return await _userRepository.InsertWithSpAsync("EXEC dbo.sp_InsertUser @Name, @Surname, @Username, @Password", parameters);
         }
 
+        public async Task<(bool isSuccess, string message)> UpdateUserWithSpAsync(User user, string password)
+        {
+            var parameters = new[]
+            {
+                new SqlParameter("@UserId", user.UserId),
+                new SqlParameter("@Name", user.Name ?? (object)DBNull.Value),
+                new SqlParameter("@Surname", user.Surname ?? (object)DBNull.Value),
+                new SqlParameter("@Username", user.Username ?? (object)DBNull.Value),
+                new SqlParameter("@Password", password ?? (object)DBNull.Value),
+            };
+
+            return await _userRepository.InsertWithSpAsync("EXEC dbo.sp_UpdateUser @UserId, @Name, @Surname, @Username, @Password", parameters);
+        }
+
         #endregion
     }
 }
