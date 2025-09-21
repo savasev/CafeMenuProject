@@ -24,17 +24,17 @@
         @Html.Partial("_EditProductCard", Model)
 
         @Html.Partial("_EditPropertyCard", Model)
+
+        @Html.Partial("_CreatePropertyModal", Model)
+
+        @Html.Partial("_EditPropertyModal")
     </div>
 </section>
-
-@Html.Partial("_CreateProductPropertyModal", Model)
-
-@Html.Partial("_EditProductPropertyModal")
 
 @section scripts {
     <script>
         $(function () {
-            var table = $('#productproperties-datatable').DataTable({
+            var table = $('#properties-datatable').DataTable({
                 processing: true,
                 serverSide: true,
                 ordering: false,
@@ -72,18 +72,18 @@
                         width: '15%',
                         className: 'text-center',
                         render: function (data, type, row) {
-                            return `<button type="button" class='btn btn-primary btn-sm edit-btn' data-id="${row.productPropertyId}">Düzenle</button>
+                            return `<button type="button" class='btn btn-primary btn-sm edit-btn' data-id="${row.PropertyId}">Düzenle</button>
                                     <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="${row.productPropertyId}">Sil</button>`;
                         }
                     }
                 ],
             });
 
-            $('#search-productproperties').on('click', function () {
+            $('#search-properties').on('click', function () {
                 table.ajax.reload();
             });
 
-            $('#productproperties-datatable').on('click', '.delete-btn', function () {
+            $('#properties-datatable').on('click', '.delete-btn', function () {
 
                 var id = $(this).data('id');
 
@@ -133,18 +133,18 @@
                 });
             });
 
-            $('#productproperties-datatable').on('click', '.edit-btn', function () {
+            $('#properties-datatable').on('click', '.edit-btn', function () {
 
                 var id = $(this).data('id');
 
                 $.ajax({
-                    url: '/Admin/Product/EditProductProperty/' + id,
+                    url: '/Admin/Product/EditProperty/' + id,
                     type: 'GET',
                     success: function (res) {
                         if (res.success) {
 
-                            $('#modal-edit-product-property .modal-body').html(res.html);
-                            $('#modal-edit-product-property').modal('show');
+                            $('#modal-edit-property .modal-body').html(res.html);
+                            $('#modal-edit-property').modal('show');
 
                         } else {
                             var message = res.message || 'İşlem başarısız oldu.';
@@ -167,14 +167,14 @@
                 });
             });
 
-            $('#createProductPropertyModalSaveBtn').on('click', function () {
+            $('#createPropertyModalSaveBtn').on('click', function () {
                 var btn = $(this);
 
                 btn.prop('disabled', true);
                 btn.text('Kaydediliyor...');
 
                 $.ajax({
-                    url: '@Url.Action("CreateProductProperty", "Product")',
+                    url: '@Url.Action("CreateProperty", "Product")',
                     type: 'POST',
                     data: {
                         ProductId: '@Model.ProductId',
@@ -183,7 +183,7 @@
                     },
                     success: function (response) {
                         if (response.success) {
-                            $('#modal-create-product-property').modal('hide');
+                            $('#modal-create-property').modal('hide');
 
                             table.ajax.reload();
 
@@ -211,25 +211,25 @@
                 });
             });
 
-            $('#editProductPropertyModalSaveBtn').on('click', function () {
+            $('#editPropertyModalSaveBtn').on('click', function () {
                 var btn = $(this);
 
                 btn.prop('disabled', true);
                 btn.text('Kaydediliyor...');
 
                 var postData = {
-                    ProductPropertyId: $('#modal-edit-product-property').find('input[name="ProductPropertyId"]').val(),
-                    Key: $('#modal-edit-product-property').find('input[name="Key"]').val(),
-                    Value: $('#modal-edit-product-property').find('input[name="Value"]').val(),
+                    PropertyId: $('#modal-edit-property').find('input[name="PropertyId"]').val(),
+                    Key: $('#modal-edit-property').find('input[name="Key"]').val(),
+                    Value: $('#modal-edit-property').find('input[name="Value"]').val(),
                 };
 
                 $.ajax({
-                    url: '@Url.Action("EditProductProperty", "Product")',
+                    url: '@Url.Action("EditProperty", "Product")',
                     type: 'POST',
                     data: postData,
                     success: function (response) {
                         if (response.success) {
-                            $('#modal-edit-product-property').modal('hide');
+                            $('#modal-edit-property').modal('hide');
 
                             table.ajax.reload();
 
@@ -257,15 +257,19 @@
                 });
             });
 
-            $('#modal-create-product-property').on('hide.bs.modal', function () {
+            $('#modal-create-property').on('hide.bs.modal', function () {
                 $('#@Html.IdFor(x => x.CreatePropertyModel.Key)').val('');
                 $('#@Html.IdFor(x => x.CreatePropertyModel.Value)').val('');
+                $('#createPropertyModalSaveBtn').prop('disabled', false);
+                $('#createPropertyModalSaveBtn').text('Kaydet');
             });
 
-            $('#modal-edit-product-property').on('hide.bs.modal', function () {
-                $('#modal-edit-product-property').find('input[name="ProductPropertyId"]').val(0);
-                $('#modal-edit-product-property').find('input[name="Key"]').val('');
-                $('#modal-edit-product-property').find('input[name="Value"]').val('');
+            $('#modal-edit-property').on('hide.bs.modal', function () {
+                $('#modal-edit-property').find('input[name="PropertyId"]').val(0);
+                $('#modal-edit-property').find('input[name="Key"]').val('');
+                $('#modal-edit-property').find('input[name="Value"]').val('');
+                $('#editPropertyModalSaveBtn').prop('disabled', false);
+                $('#editPropertyModalSaveBtn').text('Kaydet');
             });
         });
     </script>
