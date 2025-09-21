@@ -87,6 +87,32 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
             return model;
         }
 
+        private async Task<EditProductModel> PrepareEditProductModelAsync(Product product, EditProductModel model = null)
+        {
+            if (product == null)
+                throw new ArgumentNullException(nameof(product));
+
+            if (model == null)
+            {
+                model = new EditProductModel
+                {
+                    ProductId = product.ProductId,
+                    ProductName = product.ProductName,
+                    CategoryId = product.CategoryId,
+                    ImagePath = product.ImagePath,
+                    Price = product.Price,
+                };
+            }
+
+            model.AvailableCategories = (await _categoryService.GetAllCategoriesAsync()).Select(x => new SelectListItem
+            {
+                Value = x.CategoryId.ToString(),
+                Text = x.CategoryName,
+            }).ToList();
+
+            return model;
+        }
+
         #endregion
 
         #region Methods
@@ -160,9 +186,40 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
 
         #region Edit
 
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            var product = await _productService.GetProductByIdAsync(id);
+            if (product == null || product.IsDeleted)
+                return RedirectToAction("List");
+
+            var model = await PrepareEditProductModelAsync(product);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(EditProductModel model)
+        {
+            var product = await _productService.GetProductByIdAsync(model.ProductId);
+            if (product == null || product.IsDeleted)
+                return RedirectToAction("List");
+
+            if (ModelState.IsValid)
+            {
+                product.ProductName = model.ProductName;
+                product.CategoryId = model.CategoryId;
+                product.Price = model.Price;
+                product.ImagePath = model.ImagePath;
+
+                await _productService.UpdateProductAsync(product);
+
+                return RedirectToAction("List");
+            }
+
+            model = await PrepareEditProductModelAsync(product, model);
+
+            return View(model);
         }
 
         #endregion
