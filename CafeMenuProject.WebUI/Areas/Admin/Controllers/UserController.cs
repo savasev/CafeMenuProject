@@ -220,9 +220,16 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
 
         #region Delete
 
-        public ActionResult Delete(int id)
+        [HttpPost]
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            var user = await _userService.GetUserByIdAsync(id);
+            if (user == null)
+                return Json(new { success = false, message = "Kullanıcı bulunamadı" });
+
+            await _userService.DeleteUserAsync(user);
+
+            return Json(new { success = true });
         }
 
         #endregion
