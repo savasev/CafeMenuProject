@@ -401,30 +401,46 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
             if (product == null || product.IsDeleted)
                 return Json(new { success = false, message = "Ürün bulunamadı" });
 
-            if (ModelState.IsValid)
+            #region Validation
+
+            var validator = new CreatePropertyValidator();
+            var validationResult = validator.Validate(model);
+
+            if (!validationResult.IsValid)
             {
-                var property = new Property
+                foreach (var error in validationResult.Errors)
                 {
-                    Key = model.Key,
-                    Value = model.Value,
-                };
+                    ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                }
 
-                await _propertyService.InsertPropertyAsync(property);
+                var errors = validationResult.Errors
+                    .GroupBy(e => e.PropertyName)
+                    .Select(g => g.First())
+                    .Select(e => new { field = e.PropertyName, message = e.ErrorMessage })
+                    .ToList();
 
-                var productProperty = new ProductProperty
-                {
-                    ProductId = model.ProductId,
-                    PropertyId = property.PropertyId,
-                };
-
-                await _productPropertyService.InsertProductPropertyAsync(productProperty);
-
-                return Json(new { success = true });
+                return Json(new { success = false, errors });
             }
 
-            var errors = string.Join("<br/>", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
+            #endregion
 
-            return Json(new { success = false, message = errors });
+            var property = new Property
+            {
+                Key = model.Key,
+                Value = model.Value,
+            };
+
+            await _propertyService.InsertPropertyAsync(property);
+
+            var productProperty = new ProductProperty
+            {
+                ProductId = model.ProductId,
+                PropertyId = property.PropertyId,
+            };
+
+            await _productPropertyService.InsertProductPropertyAsync(productProperty);
+
+            return Json(new { success = true });
         }
 
         public async Task<ActionResult> EditProperty(int id)
@@ -446,19 +462,35 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
             if (property == null)
                 return Json(new { success = false, message = "Ürün özellik bulunamadı" }, JsonRequestBehavior.AllowGet);
 
-            if (ModelState.IsValid)
+            #region Validation
+
+            var validator = new EditPropertyValidator();
+            var validationResult = validator.Validate(model);
+
+            if (!validationResult.IsValid)
             {
-                property.Key = model.Key;
-                property.Value = model.Value;
+                foreach (var error in validationResult.Errors)
+                {
+                    ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                }
 
-                await _propertyService.UpdatePropertyAsync(property);
+                var errors = validationResult.Errors
+                    .GroupBy(e => e.PropertyName)
+                    .Select(g => g.First())
+                    .Select(e => new { field = e.PropertyName, message = e.ErrorMessage })
+                    .ToList();
 
-                return Json(new { success = true });
+                return Json(new { success = false, errors });
             }
 
-            var errors = string.Join("<br/>", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
+            #endregion
 
-            return Json(new { success = false, message = errors });
+            property.Key = model.Key;
+            property.Value = model.Value;
+
+            await _propertyService.UpdatePropertyAsync(property);
+
+            return Json(new { success = true });
         }
 
         [HttpPost]

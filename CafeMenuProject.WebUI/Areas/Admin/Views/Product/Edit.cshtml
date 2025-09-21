@@ -193,11 +193,20 @@
                                 body: 'Özellik başarıyla eklendi.'
                             });
                         } else {
-                            var message = response.message || 'Özellik ekleme işlemi başarısız oldu.';
-                            $(document).Toasts('create', {
-                                class: 'bg-danger',
-                                title: 'Hata',
-                                body: message,
+                            if (response.message && response.message.trim() !== '') {
+                                $(document).Toasts('create', {
+                                    class: 'bg-danger',
+                                    title: 'Hata',
+                                    body: response.message,
+                                });
+                            }
+
+                            response.errors.forEach(function (err) {
+                                $(document).Toasts('create', {
+                                    class: 'bg-danger',
+                                    title: 'Hata',
+                                    body: err.message,
+                                });
                             });
                         }
                     },
