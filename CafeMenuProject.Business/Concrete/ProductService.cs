@@ -2,7 +2,6 @@
 using CafeMenuProject.Core;
 using CafeMenuProject.Core.Entities;
 using CafeMenuProject.DataAccess.Abstract;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,14 +15,20 @@ namespace CafeMenuProject.Business.Concrete
         #region Fields
 
         private readonly IRepository<Product> _productRepository;
+        private readonly IRepository<ProductProperty> _productPropertyRepository;
+        private readonly IRepository<Property> _propertyRepository;
 
         #endregion
 
         #region Ctor
 
-        public ProductService(IRepository<Product> productRepository)
+        public ProductService(IRepository<Product> productRepository,
+            IRepository<ProductProperty> productPropertyRepository,
+            IRepository<Property> propertyRepository)
         {
             _productRepository = productRepository;
+            _productPropertyRepository = productPropertyRepository;
+            _propertyRepository = propertyRepository;
         }
 
         #endregion
@@ -70,6 +75,27 @@ namespace CafeMenuProject.Business.Concrete
         public async Task UpdateProductAsync(Product product)
         {
             await _productRepository.UpdateAsync(product);
+        }
+
+        public async Task<IPagedList<Property>> GetAllProductPropertiesAsync(int productId,
+            int pageIndex = 0,
+            int pageSize = int.MaxValue)
+        {
+            return await _propertyRepository.GetAllPagedAsync(query =>
+            {
+                if (productId > 0)
+                {
+                    query = from q in query
+                            join productProductRepo in _productPropertyRepository.Table on q.PropertyId equals productProductRepo.PropertyId
+                            where productProductRepo.ProductId == productId
+                            select q;
+                }
+
+                query = query.OrderBy(x => x.PropertyId);
+
+                return query;
+
+            }, pageIndex, pageSize);
         }
 
         #endregion

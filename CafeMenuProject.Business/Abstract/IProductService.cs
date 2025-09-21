@@ -21,5 +21,9 @@ namespace CafeMenuProject.Business.Abstract
         Task UpdateProductAsync(Product product);
 
         Task DeleteProductAsync(Product product);
+
+        Task<IPagedList<Property>> GetAllProductPropertiesAsync(int productId,
+            int pageIndex = 0,
+            int pageSize = int.MaxValue);
     }
 }
