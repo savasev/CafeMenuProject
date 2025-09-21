@@ -5,6 +5,7 @@ using CafeMenuProject.DataAccess.Context;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -119,6 +120,30 @@ namespace CafeMenuProject.DataAccess.Concrete
             _context.Entry(entity).State = EntityState.Modified;
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<(bool isSuccess, string message)> InsertWithSpAsync(string storedProcedureName, params SqlParameter[] parameters)
+        {
+            if (string.IsNullOrWhiteSpace(storedProcedureName))
+                throw new ArgumentNullException(nameof(storedProcedureName));
+
+            if (parameters == null)
+                parameters = Array.Empty<SqlParameter>();
+
+            try
+            {
+                await _context.Database.ExecuteSqlCommandAsync(storedProcedureName, parameters);
+
+                return (true, string.Empty);
+            }
+            catch (SqlException exc)
+            {
+                return (false, exc.Message);
+            }
+            catch (Exception exc)
+            {
+                return (false, exc.Message);
+            }
         }
 
         #endregion

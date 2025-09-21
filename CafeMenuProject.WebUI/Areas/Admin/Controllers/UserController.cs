@@ -111,7 +111,15 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
                     Username = model.Username,
                 };
 
-                await _userService.InsertUserAsync(user);
+                var (isSuccess, message) = await _userService.InsertUserWithSpAsync(user, model.Password);
+                if (!isSuccess)
+                {
+                    ViewBag.ErrorMessage = message;
+
+                    model = PrepareCreateUserModel(model);
+
+                    return View(model);
+                }
 
                 return RedirectToAction("List");
             }

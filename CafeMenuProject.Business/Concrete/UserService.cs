@@ -2,6 +2,8 @@
 using CafeMenuProject.Core;
 using CafeMenuProject.Core.Entities;
 using CafeMenuProject.DataAccess.Abstract;
+using System;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -63,6 +65,19 @@ namespace CafeMenuProject.Business.Concrete
         public async Task UpdateUserAsync(User user)
         {
             await _userRepository.UpdateAsync(user);
+        }
+
+        public async Task<(bool isSuccess, string message)> InsertUserWithSpAsync(User user, string password)
+        {
+            var parameters = new[]
+            {
+                new SqlParameter("@Name", user.Name ?? (object)DBNull.Value),
+                new SqlParameter("@Surname", user.Surname ?? (object)DBNull.Value),
+                new SqlParameter("@Username", user.Username ?? (object)DBNull.Value),
+                new SqlParameter("@Password", password ?? (object)DBNull.Value),
+            };
+
+            return await _userRepository.InsertWithSpAsync("EXEC dbo.sp_InsertUser @Name, @Surname, @Username, @Password", parameters);
         }
 
         #endregion

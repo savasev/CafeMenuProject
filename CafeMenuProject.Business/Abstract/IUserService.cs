@@ -20,5 +20,7 @@ namespace CafeMenuProject.Business.Abstract
         Task UpdateUserAsync(User user);
 
         Task DeleteUserAsync(User user);
+
+        Task<(bool isSuccess, string message)> InsertUserWithSpAsync(User user, string password);
     }
 }

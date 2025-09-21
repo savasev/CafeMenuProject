@@ -28,6 +28,13 @@
                 </h3>
             </div>
             <div class="card-body">
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <div class="alert alert-danger">
+                        @ViewBag.ErrorMessage
+                    </div>
+                }
+
                 @using (Html.BeginForm("Create", "User", FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()

@@ -31,6 +31,8 @@ namespace CafeMenuProject.DataAccess.Abstract
 
         Task DeleteAsync(TEntity entity);
 
+        Task<(bool isSuccess, string message)> InsertWithSpAsync(string storedProcedureName, params System.Data.SqlClient.SqlParameter[] parameters);
+
         #endregion
 
         #region Properties
