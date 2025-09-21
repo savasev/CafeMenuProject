@@ -47,7 +47,7 @@ namespace CafeMenuProject.WebUI.Controllers
                 return View(model);
             }
 
-            AuthHelper.SignIn(user.UserId, user.Username);
+            AuthHelper.SignIn(user);
 
             return RedirectToAction("Index", "Home");
         }
