@@ -1,5 +1,4 @@
 ﻿using CafeMenuProject.Core.Entities;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CafeMenuProject.Business.Abstract
@@ -9,8 +8,6 @@ namespace CafeMenuProject.Business.Abstract
     /// </summary>
     public interface IProductPropertyService
     {
-        Task<IList<ProductProperty>> GetAllProductPropertiesAsync();
-
         Task<ProductProperty> GetProductPropertyByIdAsync(int id);
 
         Task InsertProductPropertyAsync(ProductProperty productProperty);

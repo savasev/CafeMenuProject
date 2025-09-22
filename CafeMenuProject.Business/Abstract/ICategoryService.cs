@@ -1,5 +1,7 @@
-﻿using CafeMenuProject.Core;
+﻿using CafeMenuProject.Business.Concrete.Dtos;
+using CafeMenuProject.Core;
 using CafeMenuProject.Core.Entities;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CafeMenuProject.Business.Abstract
@@ -20,5 +22,7 @@ namespace CafeMenuProject.Business.Abstract
         Task UpdateCategoryAsync(Category category);
         
         Task DeleteCategoryAsync(Category category);
+
+        Task<List<CategoryWithProductCountDto>> GetCategoryWithProductCountDtosAsync();
     }
 }

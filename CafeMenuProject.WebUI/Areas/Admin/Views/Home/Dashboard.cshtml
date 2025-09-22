@@ -28,7 +28,16 @@
                     <div class="card-body" id="exchangeRates"></div>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-5">
+                <div class="card card-danger card-outline">
+                    <div class="card-header with-border clearfix">
+                        <h3 class="card-title">
+                            <i class="fa fa-money" aria-hidden="true"></i>
+                            Kategoriler
+                        </h3>
+                    </div>
+                    <div class="card-body" id="categories"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -38,24 +47,43 @@
 
     <script>
         function loadExchangeRatesTable() {
+
             $.getJSON('@Url.Action("ExchangeRates", "Home", new { area = "Admin" })', function (data) {
 
-                var html = "<table class='table table-bordered table-hover'><tr><th>Kur</th><th>Alış</th><th>Satış</th></tr>";
+                var html = '<table class="table table-bordered table-hover"><tr><th>Kur</th><th class="text-center">Alış</th><th class="text-center">Satış</th></tr>';
 
                 $.each(data, function (index, item) {
                     if (item.forexSelling != null) {
-                        html += `<tr><td>${item.currencyCode}</td><td>${item.forexBuying}</td><td>${item.forexSelling}</td></tr>`;
+                        html += `<tr><td>${item.currencyCode}</td><td class="text-center">${item.forexBuying}</td><td class="text-center">${item.forexSelling}</td></tr>`;
                     }
                 });
 
-                html += "</table>";
+                html += '</table>';
 
                 $("#exchangeRates").html(html);
             });
         }
 
+        function loadCategories() {
+
+            $.getJSON('@Url.Action("CategoriesWithProductCount", "Home", new { area = "Admin" })', function (data) {
+
+                var html = '<table class="table table-bordered table-hover"><tr><th>Kategori Adı</th><th class="text-center w-25">Ürün Sayısı</th></tr>';
+
+                $.each(data, function (index, item) {
+                    html += `<tr><td>${item.categoryName}</td><td class="text-center">${item.totalProductCount}</td></tr>`;
+                });
+
+                html += '</table>';
+
+                $("#categories").html(html);
+            });
+        }
+
         $(function () {
             loadExchangeRatesTable();
+            loadCategories();
+
             setInterval(loadExchangeRatesTable, 10000);
         });
 

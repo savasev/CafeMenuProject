@@ -32,21 +32,6 @@ namespace CafeMenuProject.DataAccess.Concrete
 
         #endregion
 
-        #region Utilities
-
-        private IQueryable<TEntity> AddDeletedFilter(IQueryable<TEntity> query, in bool includeDeleted)
-        {
-            if (includeDeleted)
-                return query;
-
-            if (typeof(TEntity).GetInterface(nameof(ISoftDeletedEntity)) == null)
-                return query;
-
-            return query.OfType<ISoftDeletedEntity>().Where(x => !x.IsDeleted).OfType<TEntity>();
-        }
-
-        #endregion
-
         #region Methods
 
         public async Task DeleteAsync(TEntity entity)
@@ -67,23 +52,12 @@ namespace CafeMenuProject.DataAccess.Concrete
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IList<TEntity>> GetAllAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> func = null,
-            bool includeDeleted = true)
-        {
-            var query = AddDeletedFilter(Table, includeDeleted);
-            if (func != null)
-                query = func(query);
-
-            return await query.ToListAsync();
-        }
-
         public async Task<IPagedList<TEntity>> GetAllPagedAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> func = null,
             int pageIndex = 0,
             int pageSize = int.MaxValue,
-            bool getOnlyTotalCount = false,
-            bool includeDeleted = true)
+            bool getOnlyTotalCount = false)
         {
-            var query = AddDeletedFilter(Table, includeDeleted);
+            var query = Table;
 
             query = func != null ? func(query) : query;
 

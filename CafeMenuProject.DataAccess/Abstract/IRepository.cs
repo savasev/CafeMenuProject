@@ -1,6 +1,5 @@
 ﻿using CafeMenuProject.Core;
 using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,14 +14,10 @@ namespace CafeMenuProject.DataAccess.Abstract
     {
         #region Methods
 
-        Task<IList<TEntity>> GetAllAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> func = null,
-            bool includeDeleted = true);
-
         Task<IPagedList<TEntity>> GetAllPagedAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> func = null,
             int pageIndex = 0,
             int pageSize = int.MaxValue,
-            bool getOnlyTotalCount = false,
-            bool includeDeleted = true);
+            bool getOnlyTotalCount = false);
 
         Task<TEntity> GetByIdAsync(int id);
 

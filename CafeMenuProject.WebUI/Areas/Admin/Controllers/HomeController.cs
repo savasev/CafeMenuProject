@@ -1,8 +1,9 @@
 ﻿using CafeMenuProject.Business.Abstract;
-using CafeMenuProject.WebUI.Areas.Admin.Models;
+using CafeMenuProject.WebUI.Areas.Admin.Models.Category;
 using CafeMenuProject.WebUI.Areas.Admin.Models.ExchangeRate;
 using CafeMenuProject.WebUI.Infrastructure;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
@@ -11,14 +12,17 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
     {
         #region Fields
 
+        private readonly ICategoryService _categoryService;
         private readonly ITcmbService _tcmbService;
 
         #endregion
 
         #region Ctor
 
-        public HomeController(ITcmbService tcmbService)
+        public HomeController(ICategoryService categoryService,
+            ITcmbService tcmbService)
         {
+            _categoryService = categoryService;
             _tcmbService = tcmbService;
         }
 
@@ -48,6 +52,19 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
             }).ToList();
 
             return new JsonCamelCaseResult { Data = exchangeRates, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+        }
+
+        public async Task<ActionResult> CategoriesWithProductCount()
+        {
+            var categories = (await _categoryService.GetCategoryWithProductCountDtosAsync())
+                .Select(x => new CategoryWithProductCountModel
+                {
+                    CategoryId = x.CategoryId,
+                    CategoryName = x.CategoryName,
+                    TotalProductCount = x.TotalProductCount,
+                }).ToList();
+
+            return new JsonCamelCaseResult { Data = categories, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
 
         #endregion
