@@ -166,6 +166,7 @@
     <Compile Include="Areas\Admin\Models\BaseSearchModel.cs" />
     <Compile Include="Areas\Admin\Models\Category\CategorySearchModel.cs" />
     <Compile Include="Areas\Admin\Models\Category\CategoryViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\Category\CategoryWithProductCountModel.cs" />
     <Compile Include="Areas\Admin\Models\Category\CreateCategoryModel.cs" />
     <Compile Include="Areas\Admin\Models\Category\EditCategoryModel.cs" />
     <Compile Include="Areas\Admin\Models\DataTableResult.cs" />

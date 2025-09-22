@@ -1,7 +1,6 @@
 ﻿using CafeMenuProject.Business.Abstract;
 using CafeMenuProject.Core.Entities;
 using CafeMenuProject.DataAccess.Abstract;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CafeMenuProject.Business.Concrete
@@ -31,11 +30,6 @@ namespace CafeMenuProject.Business.Concrete
         public async Task DeletePropertyAsync(Property property)
         {
             await _propertyRepository.DeleteAsync(property);
-        }
-
-        public async Task<IList<Property>> GetAllPropertysAsync()
-        {
-            return await _propertyRepository.GetAllAsync();
         }
 
         public async Task<Property> GetPropertyByIdAsync(int id)

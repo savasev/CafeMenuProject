@@ -60,6 +60,7 @@
     <Compile Include="Abstract\IUserService.cs" />
     <Compile Include="Concrete\AuthenticationService.cs" />
     <Compile Include="Concrete\CategoryService.cs" />
+    <Compile Include="Concrete\Dtos\CategoryWithProductCountDto.cs" />
     <Compile Include="Concrete\Dtos\ExchangeRateDto.cs" />
     <Compile Include="Concrete\Dtos\ProductPropertyDto.cs" />
     <Compile Include="Concrete\ProductPropertyService.cs" />
