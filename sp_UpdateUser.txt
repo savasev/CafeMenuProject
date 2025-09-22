@@ -1,0 +1,39 @@
+CREATE PROCEDURE dbo.sp_UpdateUser
+(
+    @UserId INT,
+    @Name NVARCHAR(100),
+    @Surname NVARCHAR(100),
+    @Username NVARCHAR(50),
+    @Password NVARCHAR(100)
+)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF NOT EXISTS (SELECT 1 FROM [dbo].[Users] WHERE UserId = @UserId)
+    BEGIN
+        RAISERROR('User not found.', 16, 1);
+        RETURN;
+    END
+
+    IF EXISTS (SELECT 1 FROM [dbo].[Users] WHERE Username = @Username AND UserId != @UserId)
+    BEGIN
+        RAISERROR('Username already exists.', 16, 1);
+        RETURN;
+    END
+
+    DECLARE @Salt NVARCHAR(50) = CAST(NEWID() AS NVARCHAR(50));
+
+    DECLARE @Hash VARBINARY(64) = HASHBYTES('SHA2_512', @Password + @Salt);
+
+    DECLARE @HashString NVARCHAR(128) = CONVERT(NVARCHAR(128), @Hash, 2);
+
+    UPDATE [dbo].[Users]
+    SET [Name] = @Name,
+        Surname = @Surname,
+        Username = @Username,
+        HashPassword = @HashString,
+        SaltPassword = @Salt
+    WHERE UserId = @UserId;
+
+END
