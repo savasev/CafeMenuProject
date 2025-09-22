@@ -16,6 +16,51 @@
 
 <section class="content">
     <div class="container-fluid">
-
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card card-danger card-outline">
+                    <div class="card-header with-border clearfix">
+                        <h3 class="card-title">
+                            <i class="fa fa-money" aria-hidden="true"></i>
+                            Kurlar
+                        </h3>
+                    </div>
+                    <div class="card-body" id="exchangeRates"></div>
+                </div>
+            </div>
+            <div class="col-md-8">
+            </div>
+        </div>
     </div>
 </section>
+
+@section scripts {
+
+    <script>
+        function loadExchangeRatesTable() {
+            $.getJSON('@Url.Action("ExchangeRates", "Home", new { area = "Admin" })', function (data) {
+
+                var html = "<table class='table table-bordered'><tr><th>Kur</th><th>Alış</th><th>Satış</th></tr>";
+
+                $.each(data, function (index, item) {
+                    html += "<tr>" +
+                                "<td>" + item.currencyCode + "</td>" +
+                                "<td>" + item.forexBuying + "</td>" +
+                                "<td>" + item.forexSelling + "</td>" +
+                            "</tr>";
+                });
+
+                html += "</table>";
+
+                $("#exchangeRates").html(html);
+            });
+        }
+
+        $(function () {
+            loadExchangeRatesTable();
+            setInterval(loadExchangeRatesTable, 10000);
+        });
+
+    </script>
+
+}
