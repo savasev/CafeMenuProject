@@ -1,0 +1,22 @@
+migration ve db oluşturma adımlar: 
+
+Visual Studio ile proje açıldıktan sonra:
+
+
+Eğer CafeMenuProject.DataAccess katmanında Migrations klasörü içindeki class'larla birlikte silinecek
+	ve CafeMenuProject.WebUI üzerine sağ click yapılarak "Set as Startup Project" yapılacak
+	ve sonra Build -> Rebuild Solution yapılacak
+
+
+
+Package Manager Console'da şu komutlar çalıştırılacak: 
+
+	Enable-Migrations -ProjectName CafeMenuProject.DataAccess -StartupProjectName CafeMenuProject.WebUI
+
+	Add-Migration InitialCreate -ProjectName CafeMenuProject.DataAccess -StartupProjectName CafeMenuProject.WebUI
+
+	Update-Database -ProjectName CafeMenuProject.DataAccess -StartupProjectName CafeMenuProject.WebUI
+
+Proje klasöründe yer alan sp_InsertUser.txt ve sp_UpdateUser.txt dosyalarındaki Create Stored procedure sql script'leri çalıştırılacak.
+
+
