@@ -40,14 +40,12 @@
         function loadExchangeRatesTable() {
             $.getJSON('@Url.Action("ExchangeRates", "Home", new { area = "Admin" })', function (data) {
 
-                var html = "<table class='table table-bordered'><tr><th>Kur</th><th>Alış</th><th>Satış</th></tr>";
+                var html = "<table class='table table-bordered table-hover'><tr><th>Kur</th><th>Alış</th><th>Satış</th></tr>";
 
                 $.each(data, function (index, item) {
-                    html += "<tr>" +
-                                "<td>" + item.currencyCode + "</td>" +
-                                "<td>" + item.forexBuying + "</td>" +
-                                "<td>" + item.forexSelling + "</td>" +
-                            "</tr>";
+                    if (item.forexSelling != null) {
+                        html += `<tr><td>${item.currencyCode}</td><td>${item.forexBuying}</td><td>${item.forexSelling}</td></tr>`;
+                    }
                 });
 
                 html += "</table>";
