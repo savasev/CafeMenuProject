@@ -189,7 +189,8 @@
                     data: {
                         ProductId: '@Model.ProductId',
                         Key: $('#@Html.IdFor(x => x.CreatePropertyModel.Key)').val(),
-                        Value: $('#@Html.IdFor(x => x.CreatePropertyModel.Value)').val()
+                        Value: $('#@Html.IdFor(x => x.CreatePropertyModel.Value)').val(),
+                        __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
                     },
                     success: function (response) {
                         if (response.success) {
@@ -246,6 +247,7 @@
                     PropertyId: $('#modal-edit-property').find('input[name="PropertyId"]').val(),
                     Key: $('#modal-edit-property').find('input[name="Key"]').val(),
                     Value: $('#modal-edit-property').find('input[name="Value"]').val(),
+                    __RequestVerificationToken: $('#modal-edit-property').find('input[name="__RequestVerificationToken"]').val()
                 };
 
                 $.ajax({

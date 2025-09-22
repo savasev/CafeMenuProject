@@ -1,5 +1,6 @@
 ﻿@model EditPropertyModel
 
+@Html.AntiForgeryToken()
 @Html.HiddenFor(x => x.PropertyId)
 
 <div class="form-group">

@@ -398,6 +398,7 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateProperty(CreatePropertyModel model)
         {
             var product = await _productService.GetProductByIdAsync(model.ProductId);
@@ -459,6 +460,7 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> EditProperty(EditPropertyModel model)
         {
             var property = await _propertyService.GetPropertyByIdAsync(model.PropertyId);
