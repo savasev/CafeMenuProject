@@ -169,6 +169,7 @@
     <Compile Include="Areas\Admin\Models\Category\CreateCategoryModel.cs" />
     <Compile Include="Areas\Admin\Models\Category\EditCategoryModel.cs" />
     <Compile Include="Areas\Admin\Models\DataTableResult.cs" />
+    <Compile Include="Areas\Admin\Models\ExchangeRate\ExchangeRateModel.cs" />
     <Compile Include="Areas\Admin\Models\Product\CreateProductModel.cs" />
     <Compile Include="Areas\Admin\Models\Product\CreatePropertyModel.cs" />
     <Compile Include="Areas\Admin\Models\Product\EditProductModel.cs" />
