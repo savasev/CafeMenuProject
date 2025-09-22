@@ -277,7 +277,7 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             var product = await _productService.GetProductByIdAsync(id);
-            if (product == null || product.IsDeleted)
+            if (product == null)
                 return RedirectToAction("List");
 
             var model = await PrepareEditProductModelAsync(product);
@@ -290,7 +290,7 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
         public async Task<ActionResult> Edit(EditProductModel model, bool continueEditing)
         {
             var product = await _productService.GetProductByIdAsync(model.ProductId);
-            if (product == null || product.IsDeleted)
+            if (product == null)
                 return RedirectToAction("List");
 
             #region Validation
@@ -363,7 +363,7 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
         public async Task<ActionResult> Delete(int id)
         {
             var product = await _productService.GetProductByIdAsync(id);
-            if (product == null || product.IsDeleted)
+            if (product == null)
                 return Json(new { success = false, message = "Ürün bulunamadı" });
 
             if (!string.IsNullOrEmpty(product.ImagePath))
@@ -402,7 +402,7 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
         public async Task<ActionResult> CreateProperty(CreatePropertyModel model)
         {
             var product = await _productService.GetProductByIdAsync(model.ProductId);
-            if (product == null || product.IsDeleted)
+            if (product == null)
                 return Json(new { success = false, message = "Ürün bulunamadı" });
 
             #region Validation

@@ -174,7 +174,7 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             var category = await _categoryService.GetCategoryByIdAsync(id);
-            if (category == null || category.IsDeleted)
+            if (category == null)
                 return RedirectToAction("List");
 
             var model = await PrepareEditCategoryModelAsync(category);
@@ -187,7 +187,7 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
         public async Task<ActionResult> Edit(EditCategoryModel model)
         {
             var category = await _categoryService.GetCategoryByIdAsync(model.CategoryId);
-            if (category == null || category.IsDeleted)
+            if (category == null)
                 return RedirectToAction("List");
 
             #region Validation
@@ -224,7 +224,7 @@ namespace CafeMenuProject.WebUI.Areas.Admin.Controllers
         public async Task<ActionResult> Delete(int id)
         {
             var category = await _categoryService.GetCategoryByIdAsync(id);
-            if (category == null || category.IsDeleted)
+            if (category == null)
                 return Json(new { success = false, message = "Kategori bulunamadı" });
 
             await _categoryService.DeleteCategoryAsync(category);
