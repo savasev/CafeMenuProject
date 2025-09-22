@@ -3,11 +3,9 @@ using CafeMenuProject.Business.Concrete.Dtos;
 using CafeMenuProject.Core;
 using CafeMenuProject.Core.Entities;
 using CafeMenuProject.DataAccess.Abstract;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace CafeMenuProject.Business.Concrete
