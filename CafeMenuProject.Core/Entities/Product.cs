@@ -1,5 +1,6 @@
 ﻿using CafeMenuProject.Core.Abstract;
 using System;
+using System.Collections.Generic;
 
 namespace CafeMenuProject.Core.Entities
 {
@@ -23,5 +24,11 @@ namespace CafeMenuProject.Core.Entities
         public DateTime CreatedDate { get; set; }
 
         public int CreatorUserId { get; set; }
+
+        //public virtual Category Category { get; set; }
+
+        //public virtual ICollection<ProductProperty> ProductProperties { get; set; }
+
+        //public virtual User CreatorUser { get; set; }
     }
 }

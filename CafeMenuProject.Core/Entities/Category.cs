@@ -1,5 +1,6 @@
 ﻿using CafeMenuProject.Core.Abstract;
 using System;
+using System.Collections.Generic;
 
 namespace CafeMenuProject.Core.Entities
 {
@@ -16,8 +17,12 @@ namespace CafeMenuProject.Core.Entities
 
         public bool IsDeleted { get; set; }
 
-        public DateTime  CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
 
         public int CreatorUserId { get; set; }
+
+        //public virtual ICollection<Product> Products { get; set; }
+
+        //public virtual User CreatorUser { get; set; }
     }
 }

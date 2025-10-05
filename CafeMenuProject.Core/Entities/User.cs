@@ -1,4 +1,6 @@
-﻿namespace CafeMenuProject.Core.Entities
+﻿using System.Collections.Generic;
+
+namespace CafeMenuProject.Core.Entities
 {
     /// <summary>
     /// User entity
@@ -16,5 +18,9 @@
         public string HashPassword { get; set; }
 
         public string SaltPassword { get; set; }
+
+        //public virtual ICollection<Product> Products { get; set; }
+
+        //public virtual ICollection<Category> Categories { get; set; }
     }
 }
